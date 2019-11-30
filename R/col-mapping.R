@@ -8,7 +8,7 @@ gisa_rename_cols <- function(data) {
 
   if (nrow(cols_to_rename)) {
     renames <- cols_to_rename$old_name %>%
-      setNames(cols_to_rename$new_name)
+      stats::setNames(cols_to_rename$new_name)
 
     data %>%
       dplyr::rename(!!renames)
