@@ -2,8 +2,12 @@ library(fs)
 library(purrr)
 library(readr)
 
+gisa_data_dir <- function() {
+  system.file("testdata", "gisa-data", package = "gisadata")
+}
+
 create_zip_structure <- function() {
-  temp_dir <- dir_copy("gisa-data/", tempdir())
+  temp_dir <- dir_copy(gisa_data_dir(), tempdir())
 
   dir_ls(temp_dir, recurse = TRUE, regexp = "[.]CSV$") %>%
     walk(~ zip(
