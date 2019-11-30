@@ -1,0 +1,79 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# gisadata
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+Workflow functions for tidying up claims data from the General Insurance Statistical
+Agency (GISA) of Canada.
+
+## Installation
+
+```r
+remotes::install_github("kasaai/gisadata")
+```
+
+## Example
+
+Attach necessary packages:
+
+```{r example, message=FALSE}
+library(gisadata)
+library(tidyverse)
+library(fs)
+```
+
+Suppose the data archives are in the `gisa-data` directory:
+
+```{r}
+dir_ls("gisa-data")
+```
+
+We can extract the CSV files by calling `gisa_unzip()`:
+
+```{r}
+# By default, files are extracted to a temp directory
+extract_dir <- gisa_unzip("gisa-data")
+extract_dir
+```
+
+The necessary metadata for ingesting the files can be obtained from `gisa_col_specs()`
+and `gisa_headers()`.
+
+```{r}
+col_specs <- gisa_col_specs()
+headers <- gisa_headers()
+headers$liability %>% head()
+```
+
+We can then read and combine the tables as follows:
+
+```{r}
+data_liab <- extract_dir %>%
+  path("CLSP") %>%
+  dir_ls() %>%
+  map_dfr(read_csv,
+          col_names = headers$liability,
+          col_types = col_specs$liability) %>%
+  gisa_rename_cols()
+
+glimpse(data_liab)
+```
+
+## Contributing
+
+Do not commit any (real) data files.
