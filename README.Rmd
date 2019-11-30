@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # gisadata
 
 <!-- badges: start -->
+[![Travis build status](https://travis-ci.org/kasaai/gisadata.svg?branch=master)](https://travis-ci.org/kasaai/gisadata)
 <!-- badges: end -->
 
 Workflow functions for tidying up claims data from the General Insurance Statistical

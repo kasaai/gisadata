@@ -5,3 +5,4 @@
 ^gisa-data$
 ^internal$
 ^README\.Rmd$
+^\.travis\.yml$
