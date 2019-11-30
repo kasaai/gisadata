@@ -1,5 +1,6 @@
 library(fs)
 library(purrr)
+library(readr)
 
 create_zip_structure <- function() {
   temp_dir <- dir_copy("gisa-data/", tempdir())
