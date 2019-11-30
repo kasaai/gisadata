@@ -8,14 +8,19 @@
 #' @export
 gisa_unzip <- function(zips_dir, extract_dir = tempdir()) {
 
-  extract_dir <- fs::dir_copy(zips_dir, tempdir())
+  zips_dir %>%
+    fs::dir_ls(glob = "*zip") %>%
+    purrr::walk(~ utils::unzip(
+      .x,
+      junkpaths = TRUE,
+      exdir = fs::path(extract_dir,
+                       fs::path_file(fs::path_ext_remove(.x)))
+    ))
 
   extract_dir %>%
-    fs::dir_ls(glob = "*zip") %>%
-    purrr::map(utils::unzip, exdir = extract_dir) %>%
-    purrr::flatten_chr() %>%
-    purrr::keep(~ tools::file_ext(.x) == "zip") %>%
-    purrr::walk(~ utils::unzip(.x, exdir = path_dir(.x)))
+    fs::dir_ls(glob = "*zip", recurse = TRUE) %>%
+    purrr::walk(~ utils::unzip(.x, junkpaths = TRUE,
+                               exdir = fs::path_dir(.x)))
 
   fs::dir_ls(extract_dir, glob = "*CSV", type = "file",
              invert = TRUE, recurse = TRUE) %>%
