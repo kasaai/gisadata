@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/kasaai/gisadata.svg?branch=master)](https://travis-ci.org/kasaai/gisadata)
+[![Codecov test coverage](https://codecov.io/gh/kasaai/gisadata/branch/master/graph/badge.svg)](https://codecov.io/gh/kasaai/gisadata?branch=master)
 <!-- badges: end -->
 
 Workflow functions for tidying up claims data from the General Insurance Statistical
