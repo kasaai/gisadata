@@ -1,0 +1,101 @@
+old_name, new_name
+WrittenVehicles, written_vehicles
+NumberofEarnedVehicles, earned_vehicles
+WrittenPremium, written_premium
+EarnedPremium, earned_premium
+ClaimCount, claim_count
+ClaimCountORIGINAL, claim_count_original
+ClaimCountOMPP, claim_count_ompp
+ClaimCountGENERATED, claim_count_generated
+LossAmount, loss_amount
+ExpenseAmount, expense_amount
+LossandExpenseAmount, loss_and_expense_amount
+FactorFlag, factor_flag
+SectionNumber, section_number
+ValuationYear, valuation_year
+CompanyIdentification, company_identification
+ExhibitType, exhibit_type
+MajorVehicleClass, major_vehicle_class
+MinorVehicleClass, minor_vehicle_class
+TypeOfBusiness, type_of_business
+TypeOfUse, type_of_use
+DrivingRecord, driving_record
+ExcludedDriverCode, excluded_driver_code
+TrailerIndicator, trailer_indicator
+FleetFlag, fleet_flag
+GridIndicator, grid_indicator
+FirstChanceIndicator, first_chance_indicator
+RetireeDiscount, retiree_discount
+TypeAConvictions, type_a_convictions
+TypeBConvictions, type_b_convictions
+TypeCConvictions, type_c_convictions
+VehicleUse, vehicle_use
+FirstPartyVehiTotalLossIndicator, first_party_total_loss_indicator
+OperatorGridLevel, operator_grid_level
+DriverType, driver_type
+GroupMarketingIndicator, group_marketing_indicator
+NumberOtherOperators, number_other_operators
+OtherOperatorYearsLicensed, other_operator_years_licensed
+NumberClaims, number_claims
+NumberYearsClaimsFree, number_years_claims_free
+NumberYearsLicensed, number_years_licensed
+Gender, gender
+AgeGroup, age_group
+DriverTrainingIndicator, driver_training_indicator
+Region, region
+UrbanRuralIndicator, urban_rural_indicator
+Province, province
+StatisticalTerritory, statistical_territory
+VehicleLocationPostalCode, vehicle_location_postal_code
+MajorCoverageType, major_coverage_type
+MinorCoverageType, minor_coverage_type
+DeductibleAmount, deductible_amount
+LimitAmount, limit_amount
+SizeOfLossRange, size_of_loss_range
+KindOfLossCode, kind_of_loss_code
+LossTransferFlag, loss_transfer_flag
+PaidOutstandingIndicator, paid_outstanding_indicator
+EntryHalfYear, entry_half_year
+AccidentHalfYear, accident_half_year
+Offsettortdeductible, offset_tort_deductible
+AccBenOpt-MedRehab, acc_ben_opt_med_rehab
+AccBenOpt-AttendCare, acc_ben_opt_attend_care
+"AccBenOpt-Caregiver,HousekeepingandHomemaintenance", acc_ben_opt_caregiver
+AccBenOpt-IncomeReplacement, acc_ben_opt_income_replacement
+AccBenOpt-DependentCare, acc_ben_opt_dependent_care
+AccBenOpt-DeathandFuneralexpenses, acc_ben_opt_funeral_expenses
+AccBenOpt-Indexation, acc_ben_opt_indexation
+AccBenCatastrophicImpairmentindicator, acc_ben_opt_cat_impairment_indicator
+AccBenMinorInjuryindicator, acc_ben_minor_injury_indicator
+AccBenCatastrophicImpairmentstatus, acc_ben_cat_impairment_status
+AccBenMinorinjurystatus, acc_ben_minor_injury_status
+AccidentDateCatastrophe, accident_date_cat
+ClaimCountCatastrophic, claim_count_cat
+LossAmountCatastrophic, loss_amount_cat
+ExpenseAmountCatastrophic, expense_amount_cat
+LossandExpenseAmountCatastrophic, loss_and_expense_amount_cat
+Written Premium, written_premium
+Earned Premium, earned_premium
+Reported Claim Count, reported_claim_count
+Generated Claim Count, generated_claim_count
+Loss Amount, loss_amount
+Expense Amount, expense_amount
+Loss and Expense Amount, loss_and_expense_amount
+Section Number, section_number
+Company Identification, company_identification
+Region, region
+Province, province
+Valuation Year, valuation_year
+Accident Year, accident_year
+Entry Year, entry_year
+Major Class, major_class
+Coverage/Policy Form, coverage_policy_form
+Industry Code, industry_code
+Policy Type, policy_type
+Kind of Loss Code, kind_of_loss_code
+Kind of Loss Indicator, kind_of_loss_indicator
+Paid Outstanding Indicator, paid_outstanding_indicator
+Claim Location, claim_location
+Type of Expense, type_of_expense
+Policy Limit Group, policy_limit_group
+Size of Loss  Range Group, size_of_loss_range_group
