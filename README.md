@@ -7,6 +7,8 @@
 
 [![Travis build
 status](https://travis-ci.org/kasaai/gisadata.svg?branch=master)](https://travis-ci.org/kasaai/gisadata)
+[![Codecov test
+coverage](https://codecov.io/gh/kasaai/gisadata/branch/master/graph/badge.svg)](https://codecov.io/gh/kasaai/gisadata?branch=master)
 <!-- badges: end -->
 
 Workflow functions for tidying up claims data from the General Insurance
@@ -42,7 +44,7 @@ We can extract the CSV files by calling `gisa_unzip()`:
 # By default, files are extracted to a temp directory
 extract_dir <- gisa_unzip("gisa-data")
 extract_dir
-#> [1] "/var/folders/1z/808_xcnx2fx8d9d2l4d8_hqr0000gn/T//RtmpMEZoZL"
+#> [1] "/var/folders/1z/808_xcnx2fx8d9d2l4d8_hqr0000gn/T//RtmpAD7wWt"
 ```
 
 The necessary metadata for ingesting the files can be obtained from
