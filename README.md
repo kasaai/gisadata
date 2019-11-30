@@ -42,7 +42,7 @@ We can extract the CSV files by calling `gisa_unzip()`:
 # By default, files are extracted to a temp directory
 extract_dir <- gisa_unzip("gisa-data")
 extract_dir
-#> [1] "/var/folders/1z/808_xcnx2fx8d9d2l4d8_hqr0000gn/T//RtmpJ4rs9I"
+#> [1] "/var/folders/1z/808_xcnx2fx8d9d2l4d8_hqr0000gn/T//RtmpzBwxfv"
 ```
 
 The necessary metadata for ingesting the files can be obtained from
@@ -99,4 +99,13 @@ glimpse(data_liab)
 
 ## Contributing
 
-Do not commit any (real) data files.
+  - Do not commit any (real) data files.
+  - Follow [Tidyverse style guide](https://style.tidyverse.org/).
+  - Column renaming uses the mapping table under
+    [`data-raw`](https://github.com/kasaai/gisadata/tree/master/data-raw).
+    If you’re making a change, the accompanying script should be run and
+    the resulting `R/sysdata.rda` committed.
+  - Column headers are kept in
+    [`inst/extdata`](https://github.com/kasaai/gisadata/tree/master/inst/extdata).
+  - Sample uncompressed files are kept in
+    [`inst/testdata/gisa-data`](https://github.com/kasaai/gisadata/tree/master/inst/testdata/gisa-data).
