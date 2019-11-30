@@ -42,7 +42,7 @@ We can extract the CSV files by calling `gisa_unzip()`:
 # By default, files are extracted to a temp directory
 extract_dir <- gisa_unzip("gisa-data")
 extract_dir
-#> [1] "/var/folders/1z/808_xcnx2fx8d9d2l4d8_hqr0000gn/T//RtmpzBwxfv"
+#> [1] "/var/folders/1z/808_xcnx2fx8d9d2l4d8_hqr0000gn/T//RtmpMEZoZL"
 ```
 
 The necessary metadata for ingesting the files can be obtained from
@@ -109,3 +109,5 @@ glimpse(data_liab)
     [`inst/extdata`](https://github.com/kasaai/gisadata/tree/master/inst/extdata).
   - Sample uncompressed files are kept in
     [`inst/testdata/gisa-data`](https://github.com/kasaai/gisadata/tree/master/inst/testdata/gisa-data).
+  - Input types of each type of table are explicitly specified in
+    [`R/col-specs.R`](https://github.com/kasaai/gisadata/blob/master/R/col-specs.R).
