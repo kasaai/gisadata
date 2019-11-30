@@ -18,7 +18,8 @@ test_that("read and rename", {
   col_specs <- gisa_col_specs()
   headers <- gisa_headers()
 
-  data_liab <- path(gisa_data_dir(), "CLSP") %>%
+  data_liab <- gisa_data_dir() %>%
+    path("CLSP") %>%
     dir_ls() %>%
     map_dfr(read_csv,
       col_names = headers$liability,

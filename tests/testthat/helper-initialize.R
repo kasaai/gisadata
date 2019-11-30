@@ -2,7 +2,9 @@ library(fs)
 library(purrr)
 library(readr)
 
-gisa_data_dir <- function() dir_ls(getwd(), type = "directory", regexp = "gisa-data")
+gisa_data_dir <- function() {
+  system.file("testdata", "gisa-data", package = "gisadata")
+}
 
 create_zip_structure <- function() {
   temp_dir <- dir_copy(gisa_data_dir(), tempdir())
