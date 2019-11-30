@@ -1,4 +1,5 @@
 test_that("unzip works", {
+  skip_on_travis()
   ls_1 <- dir_ls("gisa-data", type = "file", recurse = TRUE) %>%
     path_rel("gisa-data")
 
@@ -14,6 +15,7 @@ test_that("unzip works", {
 })
 
 test_that("read and rename", {
+  skip_on_travis()
   col_specs <- gisa_col_specs()
   headers <- gisa_headers()
 
