@@ -1,7 +1,7 @@
 test_that("unzip works", {
-  skip_on_travis()
-  ls_1 <- dir_ls("gisa-data", type = "file", recurse = TRUE) %>%
-    path_rel("gisa-data")
+
+  ls_1 <- dir_ls(gisa_data_dir(), type = "file", recurse = TRUE) %>%
+    path_rel(gisa_data_dir())
 
   zips_dir <- create_zip_structure()
 
@@ -15,11 +15,10 @@ test_that("unzip works", {
 })
 
 test_that("read and rename", {
-  skip_on_travis()
   col_specs <- gisa_col_specs()
   headers <- gisa_headers()
 
-  data_liab <- path("gisa-data", "CLSP") %>%
+  data_liab <- path(gisa_data_dir(), "CLSP") %>%
     dir_ls() %>%
     map_dfr(read_csv,
       col_names = headers$liability,
