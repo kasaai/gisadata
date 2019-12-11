@@ -141,6 +141,41 @@ gisa_select_cols <- function(data, format_number) {
       "paid_outstanding_indicator",
       "entry_half_year",
       "accident_half_year"
+    ),
+    "21" = c(
+      "written_vehicles",
+      "earned_vehicles",
+      "written_premium",
+      "earned_premium",
+      "claim_count",
+      "claim_count_original",
+      "claim_count_ompp",
+      "loss_amount",
+      "expense_amount",
+      "loss_and_expense_amount",
+      "factor_flag",
+      "section_number",
+      "valuation_year",
+      "company_identification",
+      # Not currently used
+      # "exhibit_type",
+      "major_vehicle_class",
+      "minor_vehicle_class",
+      "region",
+      "province",
+      "statistical_territory",
+      "major_coverage_type",
+      "minor_coverage_type",
+      "deductible_amount",
+      "limit_amount",
+      "kind_of_loss_code",
+      "loss_transfer_flag",
+      "accident_half_year",
+      "accident_date_cat",
+      "claim_count_cat",
+      "loss_amount_cat",
+      "expense_amount_cat",
+      "loss_and_expense_amount_cat"
     )
   )
 
