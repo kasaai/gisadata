@@ -50,6 +50,19 @@ gisa_exhibit_mapping <- function() {
     "LIAB4501", "41", "Employers' Liability (including Voluntary compensation)", "10",
     "LIAB4501", "42", "Employers' Liability (including Voluntary compensation) - Total of all KoLs", "10",
     "LIAB4501", "43", "Total of All Coverages/Policy Form", "10",
-    "LIAB4501", "44", "Total of All Coverages/Policy Form - Total of all KoLs", "10"
+    "LIAB4501", "44", "Total of All Coverages/Policy Form - Total of all KoLs", "10",
+    "AUTO6001", "4", "Catastrophe Report - All classes Comprehensive, All Perils and Specified Perils", "21", # (NB, NL, NS, and PE)
+    "AUTO6001", "8", "Catastrophe Report - All classes Comprehensive, All Perils and Specified Perils", "21", # (NL)
+    "AUTO6001", "12", "Catastrophe Report - All classes Comprehensive, All Perils and Specified Perils", "21", # (NS)
+    "AUTO6001", "16", "Catastrophe Report - All classes Comprehensive, All Perils and Specified Perils", "21", # (PE)
+    "AUTO7001", "1", "Loss development exhibit - Private Passenger - Exposures and Premium distribution", "5",
+    "AUTO7001", "2", "Loss development exhibit - Private Passenger - Third Party Liability", "6",
+    "AUTO7001", "3", "Loss development exhibit - Private Passenger - Accident Benefits", "6",
+    "AUTO7001", "4", "Loss development exhibit - Private Passenger - Underinsured Motorist", "6",
+    "AUTO7001", "5", "Loss development exhibit - Private Passenger - All Perils", "6",
+    "AUTO7001", "6", "Loss development exhibit - Private Passenger - Collision", "6",
+    "AUTO7001", "7", "Loss development exhibit - Private Passenger - Comprehensive", "6",
+    "AUTO7001", "8", "Loss development exhibit - Private Passenger - Specified Perils", "6",
+    "AUTO7001", "9", "Loss development exhibit - Private Passenger - Uninsured Automobile", "6"
   )
 }
