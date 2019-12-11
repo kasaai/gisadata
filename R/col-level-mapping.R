@@ -69,17 +69,31 @@ liability_kind_of_loss_mapping <- function() {
 #' @param data Data frame with tidy names.
 #' @export
 gisa_liab_map_levels <- function(data) {
-  data %>%
-    dplyr::left_join(liability_major_class_mapping(),
-                     by = "major_class") %>%
-    dplyr::select(-.data$major_class) %>%
-    dplyr::rename(major_class = .data$major_class_mapped) %>%
-    dplyr::left_join(liability_coverage_policy_form_mapping(),
-                     by = "coverage_policy_form") %>%
-    dplyr::select(-.data$coverage_policy_form) %>%
-    dplyr::rename(coverage_policy_form = .data$coverage_policy_form_mapped) %>%
-    dplyr::left_join(liability_kind_of_loss_mapping(),
-                     by = "kind_of_loss_code") %>%
-    dplyr::select(-.data$kind_of_loss_code) %>%
-    dplyr::rename(kind_of_loss = .data$kind_of_loss_code_mapped)
+  data_cols <- colnames(data)
+
+  if ("major_class" %in% data_cols) {
+    data <- data %>%
+      dplyr::left_join(liability_major_class_mapping(),
+                       by = "major_class") %>%
+      dplyr::select(-.data$major_class) %>%
+      dplyr::rename(major_class = .data$major_class_mapped)
+  }
+
+  if ("coverage_policy_form" %in% data_cols) {
+    data <- data %>%
+      dplyr::left_join(liability_coverage_policy_form_mapping(),
+                       by = "coverage_policy_form") %>%
+      dplyr::select(-.data$coverage_policy_form) %>%
+      dplyr::rename(coverage_policy_form = .data$coverage_policy_form_mapped)
+  }
+
+  if ("kind_of_loss_code" %in% data_cols) {
+    data <- data %>%
+      dplyr::left_join(liability_kind_of_loss_mapping(),
+                       by = "kind_of_loss_code") %>%
+      dplyr::select(-.data$kind_of_loss_code) %>%
+      dplyr::rename(kind_of_loss = .data$kind_of_loss_code_mapped)
+  }
+
+  data
 }
