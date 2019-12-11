@@ -1,3 +1,19 @@
+map_levels <- function(data, mapping_table) {
+  mt_names <- colnames(mapping_table)
+  original_col <- mt_names[[1]]
+  mapped_col <- mt_names[[2]]
+
+  if (original_col %in% colnames(data)) {
+    data %>%
+      dplyr::left_join(mapping_table,
+                       by = original_col) %>%
+      dplyr::select(-.data[[original_col]]) %>%
+      dplyr::rename(!!original_col := .data[[mapped_col]])
+  } else {
+    data
+  }
+}
+
 liability_major_class_mapping <- function() {
   tibble::tribble(
     ~major_class, ~major_class_mapped,
@@ -77,39 +93,90 @@ paid_outstanding_indicator_mapping <- function() {
 #' @param data Data frame with tidy names.
 #' @export
 gisa_liab_map_levels <- function(data) {
-  data_cols <- colnames(data)
-
-  if ("major_class" %in% data_cols) {
-    data <- data %>%
-      dplyr::left_join(liability_major_class_mapping(),
-                       by = "major_class") %>%
-      dplyr::select(-.data$major_class) %>%
-      dplyr::rename(major_class = .data$major_class_mapped)
-  }
-
-  if ("coverage_policy_form" %in% data_cols) {
-    data <- data %>%
-      dplyr::left_join(liability_coverage_policy_form_mapping(),
-                       by = "coverage_policy_form") %>%
-      dplyr::select(-.data$coverage_policy_form) %>%
-      dplyr::rename(coverage_policy_form = .data$coverage_policy_form_mapped)
-  }
-
-  if ("kind_of_loss_code" %in% data_cols) {
-    data <- data %>%
-      dplyr::left_join(liability_kind_of_loss_mapping(),
-                       by = "kind_of_loss_code") %>%
-      dplyr::select(-.data$kind_of_loss_code) %>%
-      dplyr::rename(kind_of_loss = .data$kind_of_loss_code_mapped)
-  }
-
-  if ("paid_outstanding_indicator" %in% data_cols) {
-    data <- data %>%
-      dplyr::left_join(paid_outstanding_indicator_mapping(),
-                       by = "paid_outstanding_indicator") %>%
-      dplyr::select(-.data$paid_outstanding_indicator) %>%
-      dplyr::rename(paid_outstanding_indicator = .data$paid_outstanding_indicator_mapped)
-  }
-
-  data
+  data %>%
+    map_levels(liability_major_class_mapping()) %>%
+    map_levels(liability_coverage_policy_form_mapping()) %>%
+    map_levels(liability_kind_of_loss_mapping()) %>%
+    map_levels(paid_outstanding_indicator_mapping())
 }
+
+auto_factor_flag_mapping <- function() {
+  tibble::tribble(
+    ~factor_flag, ~factor_flag_mapped,
+    "0", "No",
+    "1", "Yes"
+  )
+}
+
+fleet_flag_mapping <- function() {
+  tibble::tribble(
+    ~fleet_flag, ~flee_flag_mapped,
+    "0", "No",
+    "1", "Fleet rated",
+    "2", "Synthetic fleet"
+  )
+}
+
+major_coverage_type_mapping <- function() {
+  tibble::tribble(
+    ~major_coverage_type, ~major_coverage_type_mapped,
+    "AB", "Accident Benefits",
+    "AP", "All Perils",
+    "CL", "Collision",
+    "CM", "Comprehensive",
+    "DDTD", "Death, Dismemberment, and Total Disability",
+    "EELE", "Excess Economic Loss Endorsement",
+    "Misc", "Miscenallneous Coverages",
+    "SP", "Specified Perils",
+    "TPL", "Third Party Liability",
+    "UA", "Uninsured Automobile",
+    "UM", "Underinsured Motorist"
+  )
+}
+
+minor_coverage_type_mapping <- function() {
+  tibble::tribble(
+    ~minor_coverage_type, ~minor_coverage_type_mapped,
+    "AB", "Accident Benefits",
+    "AP", "All Perils",
+    "CL", "Collision",
+    "CM", "Comprehensive",
+    "DC", "Direct Compensation",
+    "DDTD", "Death, Dismemberment, and Total Disability",
+    "EELE", "Excess Economic Loss Endorsement",
+    "MED", "Medical",
+    "MS", "Miscellaneous Coverages",
+    "PD", "Property Damage",
+    "SIC", "Single Interest Collision",
+    "SIFT", "Single Interest Fire and Theft",
+    "SP", "Specified Perils",
+    "TPL", "Third Party Liability",
+    "UA", "Uninsured Automobile",
+    "UM", "Underinsured Motorist"
+  )
+}
+
+loss_transfer_flag_mapping <- function() {
+  tibble::tribble(
+    ~loss_transfer_flag, ~loss_transfer_flag_mapped,
+    "0", "No",
+    "1", "Yes"
+  )
+}
+
+#' Map auto categorical variable levels
+#'
+#' @param data Data frame with tidy names.
+#' @export
+gisa_auto_map_levels <- function(data) {
+
+  data %>%
+    map_levels(auto_factor_flag_mapping()) %>%
+    map_levels(fleet_flag_mapping()) %>%
+    map_levels(major_coverage_type_mapping()) %>%
+    map_levels(minor_coverage_type_mapping()) %>%
+    map_levels(loss_transfer_flag_mapping()) %>%
+    map_levels(paid_outstanding_indicator_mapping())
+}
+
+
