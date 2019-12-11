@@ -50,39 +50,17 @@ We can extract the CSV files by calling `gisa_unzip()`:
 ```{r}
 # By default, files are extracted to a temp directory
 extract_dir <- gisa_unzip("gisa-data")
-extract_dir
-```
-
-The necessary metadata for ingesting the files can be obtained from `gisa_col_specs()`
-and `gisa_headers()`.
-
-```{r}
-col_specs <- gisa_col_specs()
-headers <- gisa_headers()
-headers$liability %>% head()
+dir_ls(extract_dir)
 ```
 
 Read and process tables:
 
 ```{r}
-data_liab <- extract_dir %>%
-  path("CLSP") %>%
-  dir_ls() %>%
-  map(read_csv,
-          col_names = headers$liability,
-          col_types = col_specs$liability) %>%
-  imap(~ .x %>%
-         gisa_rename_cols() %>%
-         mutate(file = str_extract(.y, "LIAB\\d{4}")) %>%
-         left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
-  map(~ group_split(.x, exhibit)) %>%
-  flatten() %>%
-  set_names(map_chr(., ~ first(.x$exhibit))) %>%
-  map(~ .x %>% 
-        gisa_select_cols(first(.x$format_number)) %>% 
-        gisa_liab_map_levels())
+data_auto <- extract_dir %>% 
+  path("Auto Loss Development") %>% 
+  gisa_process_auto_dev()
 
-data_liab$`Loss Development - CGL - with product/completed operations` %>% 
+data_auto$`Loss development exhibit - Private Passenger - All Perils` %>% 
   glimpse()
 ```
 
@@ -90,9 +68,3 @@ data_liab$`Loss Development - CGL - with product/completed operations` %>%
 
 - Do not commit any (real) data files.
 - Follow [Tidyverse style guide](https://style.tidyverse.org/).
-- Column renaming uses the mapping table under [`data-raw`](https://github.com/kasaai/gisadata/tree/master/data-raw). 
-If you're making a change, the accompanying script should be run and the 
-resulting `R/sysdata.rda` committed.
-- Column headers are kept in [`inst/extdata`](https://github.com/kasaai/gisadata/tree/master/inst/extdata).
-- Sample uncompressed files are kept in [`inst/testdata/gisa-data`](https://github.com/kasaai/gisadata/tree/master/inst/testdata/gisa-data).
-- Input types of each type of table are explicitly specified in [`R/col-specs.R`](https://github.com/kasaai/gisadata/blob/master/R/col-specs.R).
