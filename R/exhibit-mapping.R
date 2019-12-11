@@ -1,4 +1,7 @@
-exhibit_mapping <- function() {
+#' Exhibit  mapping
+#'
+#' @export
+gisa_exhibit_mapping <- function() {
   tibble::tribble(
     ~file, ~section_number, ~exhibit, ~format_number,
     "LIAB2001", "1", "Analysis by Large Incurred Losses by Coverage/Policy Form within Major Class", "3",

@@ -2,6 +2,7 @@
 
 export("%>%")
 export(gisa_col_specs)
+export(gisa_exhibit_mapping)
 export(gisa_headers)
 export(gisa_liab_map_levels)
 export(gisa_rename_cols)
