@@ -89,7 +89,8 @@ gisa_select_cols <- function(data, format_number) {
       "section_number",
       "valuation_year",
       "company_identification",
-      "exhibit_type",
+      # Not currently used
+      # "exhibit_type",
       "major_vehicle_class",
       "minor_vehicle_class",
       "trailer_indicator",
@@ -120,7 +121,8 @@ gisa_select_cols <- function(data, format_number) {
       "section_number",
       "valuation_year",
       "company_identification",
-      "exhibit_type",
+      # Not currently used
+      # "exhibit_type",
       "major_vehicle_class",
       "minor_vehicle_class",
       "excluded_driver_code",

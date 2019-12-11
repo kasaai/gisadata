@@ -19,7 +19,7 @@ gisa_col_specs <- function() {
     SectionNumber = col_character(),
     ValuationYear = col_character(),
     CompanyIdentification = col_character(),
-    ExhibitType = col_character(),
+    ExhibitType = col_skip(),
     MajorVehicleClass = col_character(),
     MinorVehicleClass = col_character(),
     TypeOfBusiness = col_character(),
