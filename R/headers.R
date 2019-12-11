@@ -7,7 +7,6 @@ read_header <- function(path) {
 
 #' GISA data headers
 #'
-#' @export
 gisa_headers <- function() {
   liability_header <- read_header("cleps_header.csv")
   auto_cat_header <- read_header("auto_eps_header.csv")

@@ -1,6 +1,5 @@
 #' Exhibit  mapping
 #'
-#' @export
 gisa_exhibit_mapping <- function() {
   tibble::tribble(
     ~file, ~section_number, ~exhibit, ~format_number,

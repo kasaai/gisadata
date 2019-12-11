@@ -21,7 +21,9 @@ Imports:
     dplyr,
     purrr,
     tibble,
-    fs
+    fs,
+    stringr,
+    rlang
 Suggests: 
     testthat (>= 2.1.0),
     covr

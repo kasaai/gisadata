@@ -1,6 +1,5 @@
 #' GISA data column specs
 #'
-#' @export
 #' @importFrom readr col_double col_character col_skip col_integer
 gisa_col_specs <- function() {
   auto_cols <- list(

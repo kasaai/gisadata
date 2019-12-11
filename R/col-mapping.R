@@ -1,7 +1,6 @@
 #' Rename columns
 #'
 #' @param data A data frame with GISA column names.
-#' @export
 gisa_rename_cols <- function(data) {
   cols_to_rename <- tibble::tibble(old_name = names(data)) %>%
     dplyr::inner_join(gisa_column_mapping, by = "old_name")
@@ -22,7 +21,6 @@ gisa_rename_cols <- function(data) {
 #'
 #' @param data Data frame
 #' @param format_number GISA format number
-#' @export
 gisa_select_cols <- function(data, format_number) {
   cols_to_select <- switch(
     format_number,

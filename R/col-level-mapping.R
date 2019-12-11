@@ -1,3 +1,4 @@
+#' @importFrom rlang :=
 map_levels <- function(data, mapping_table) {
   mt_names <- colnames(mapping_table)
   original_col <- mt_names[[1]]
@@ -91,7 +92,6 @@ paid_outstanding_indicator_mapping <- function() {
 #' Map liability categorical variable levels
 #'
 #' @param data Data frame with tidy names.
-#' @export
 gisa_liab_map_levels <- function(data) {
   data %>%
     map_levels(liability_major_class_mapping()) %>%
@@ -167,7 +167,6 @@ loss_transfer_flag_mapping <- function() {
 #' Map auto categorical variable levels
 #'
 #' @param data Data frame with tidy names.
-#' @export
 gisa_auto_map_levels <- function(data) {
 
   data %>%
