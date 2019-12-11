@@ -27,7 +27,7 @@ gisa_select_cols <- function(data, format_number) {
   cols_to_select <- switch(
     format_number,
     "3" = c(
-      "generated_claim_amount",
+      "generated_claim_count",
       "loss_amount",
       "expense_amount",
       "loss_and_expense_amount",
@@ -39,11 +39,11 @@ gisa_select_cols <- function(data, format_number) {
       "accident_year",
       "major_class",
       "coverage_policy_form",
-      "kind_of_loss_indicaator",
-      "size_of_loss_range"
+      "kind_of_loss_indicator",
+      "size_of_loss_range_group"
     ),
     "4" = c(
-      "generated_claim_amount",
+      "generated_claim_count",
       "loss_amount",
       "expense_amount",
       "loss_and_expense_amount",
@@ -54,10 +54,10 @@ gisa_select_cols <- function(data, format_number) {
       "valuation_year",
       "accident_year",
       "industry_code",
-      "size_of_loss_range"
+      "size_of_loss_range_group"
     ),
     "10" = c(
-      "generated_claim_amount",
+      "generated_claim_count",
       "loss_amount",
       "expense_amount",
       "loss_and_expense_amount",
