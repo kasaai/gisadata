@@ -5,6 +5,8 @@
 #' @name gisa_process
 NULL
 
+utils::globalVariables(".")
+
 #' @rdname gisa_process
 #' @export
 gisa_process_clsp <- function(path) {
