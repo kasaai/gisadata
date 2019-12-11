@@ -64,6 +64,14 @@ liability_kind_of_loss_mapping <- function() {
   )
 }
 
+paid_outstanding_indicator_mapping <- function() {
+  tibble::tribble(
+    ~paid_outstanding_indicator, ~paid_outstanding_indicator_mapped,
+    "1", "Paid",
+    "2", "Outstanding"
+  )
+}
+
 #' Map liability categorical variable levels
 #'
 #' @param data Data frame with tidy names.
@@ -93,6 +101,14 @@ gisa_liab_map_levels <- function(data) {
                        by = "kind_of_loss_code") %>%
       dplyr::select(-.data$kind_of_loss_code) %>%
       dplyr::rename(kind_of_loss = .data$kind_of_loss_code_mapped)
+  }
+
+  if ("paid_outstanding_indicator" %in% data_cols) {
+    data <- data %>%
+      dplyr::left_join(paid_outstanding_indicator_mapping(),
+                       by = "paid_outstanding_indicator") %>%
+      dplyr::select(-.data$paid_outstanding_indicator) %>%
+      dplyr::rename(paid_outstanding_indicator = .data$paid_outstanding_indicator_mapped)
   }
 
   data
