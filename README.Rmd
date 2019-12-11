@@ -62,18 +62,28 @@ headers <- gisa_headers()
 headers$liability %>% head()
 ```
 
-We can then read and combine the tables as follows:
+Read and process tables:
 
 ```{r}
 data_liab <- extract_dir %>%
   path("CLSP") %>%
   dir_ls() %>%
-  map_dfr(read_csv,
+  map(read_csv,
           col_names = headers$liability,
           col_types = col_specs$liability) %>%
-  gisa_rename_cols()
+  imap(~ .x %>%
+         gisa_rename_cols() %>%
+         mutate(file = str_extract(.y, "LIAB\\d{4}")) %>%
+         left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
+  map(~ group_split(.x, exhibit)) %>%
+  flatten() %>%
+  set_names(map_chr(., ~ first(.x$exhibit))) %>%
+  map(~ .x %>% 
+        gisa_select_cols(first(.x$format_number)) %>% 
+        gisa_liab_map_levels())
 
-glimpse(data_liab)
+data_liab$`Loss Development - CGL - with product/completed operations` %>% 
+  glimpse()
 ```
 
 ## Contributing
