@@ -1,3 +1,4 @@
+#' @importFrom rlang :=
 map_levels <- function(data, mapping_table) {
   mt_names <- colnames(mapping_table)
   original_col <- mt_names[[1]]
