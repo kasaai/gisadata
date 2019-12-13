@@ -22,11 +22,13 @@ gisa_process_clsp <- function(path) {
            gisa_rename_cols() %>%
            dplyr::mutate(file = stringr::str_extract(.y, "LIAB\\d{4}")) %>%
            dplyr::left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
-    purrr::map(~ dplyr::group_split(.x, exhibit)) %>%
+    purrr::map(~ dplyr::group_split(.x, exhibit, province)) %>%
     purrr::flatten() %>%
-    purrr::set_names(purrr::map_chr(., ~ dplyr::first(.x$exhibit))) %>%
+    purrr::set_names(
+      purrr::map_chr(., ~ paste0(unique(.x$exhibit), " - ", unique(.x$province)))
+    ) %>%
     purrr::map(~ .x %>%
-          gisa_select_cols(dplyr::first(.x$format_number)) %>%
+          gisa_select_cols(unique(.x$format_number)) %>%
           gisa_liab_map_levels())
 }
 
@@ -46,11 +48,13 @@ gisa_process_auto_dev <- function(path) {
                   gisa_rename_cols() %>%
                   dplyr::mutate(file = stringr::str_extract(.y, "AUTO\\d{4}")) %>%
                   dplyr::left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
-    purrr::map(~ dplyr::group_split(.x, exhibit)) %>%
+    purrr::map(~ dplyr::group_split(.x, exhibit, province)) %>%
     purrr::flatten() %>%
-    purrr::set_names(purrr::map_chr(., ~ dplyr::first(.x$exhibit))) %>%
+    purrr::set_names(
+      purrr::map_chr(., ~ paste0(unique(.x$exhibit), " - ", unique(.x$province)))
+    ) %>%
     purrr::map(~ .x %>%
-                 gisa_select_cols(dplyr::first(.x$format_number)) %>%
+                 gisa_select_cols(unique(.x$format_number)) %>%
                  gisa_auto_map_levels())
 }
 
@@ -69,12 +73,12 @@ gisa_process_auto_cat <- function(path) {
                   gisa_rename_cols() %>%
                   dplyr::mutate(file = stringr::str_extract(.y, "AUTO\\d{4}")) %>%
                   dplyr::left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
-    purrr::map(~ dplyr::group_split(.x, exhibit)) %>%
+    purrr::map(~ dplyr::group_split(.x, exhibit, province)) %>%
     purrr::flatten() %>%
     purrr::set_names(
-      purrr::map_chr(., ~ paste0(head(.x$exhibit, 1), " - ", head(.x$province, 1)))
+      purrr::map_chr(., ~ paste0(unique(.x$exhibit), " - ", unique(.x$province)))
     ) %>%
     purrr::map(~ .x %>%
-                 gisa_select_cols(dplyr::first(.x$format_number)) %>%
+                 gisa_select_cols(unique(.x$format_number)) %>%
                  gisa_auto_map_levels())
 }

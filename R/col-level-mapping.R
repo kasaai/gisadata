@@ -77,7 +77,8 @@ liability_kind_of_loss_mapping <- function() {
     "51", "Bodily Injury - Employers' Liability",
     "61", "Bodily Injury - Pollution Liability",
     "62", "Property Damage - Pollution Liability",
-    "69", "Other - Pollution Liability"
+    "69", "Other - Pollution Liability",
+    "70", "UNDOCUMENTED"
   )
 }
 
@@ -141,6 +142,8 @@ minor_coverage_type_mapping <- function() {
     ~minor_coverage_type, ~minor_coverage_type_mapped,
     "AB", "Accident Benefits",
     "AP", "All Perils",
+    # BI is undocumented, see #25
+    "BI", "Bodily Injury",
     "CL", "Collision",
     "CM", "Comprehensive",
     "DC", "Direct Compensation",

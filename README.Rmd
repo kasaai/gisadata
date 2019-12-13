@@ -60,7 +60,7 @@ data_auto <- extract_dir %>%
   path("Auto Loss Development") %>% 
   gisa_process_auto_dev()
 
-data_auto$`Loss development exhibit - Private Passenger - All Perils` %>% 
+data_auto$`Loss development exhibit - Private Passenger - All Perils - AB` %>% 
   glimpse()
 ```
 

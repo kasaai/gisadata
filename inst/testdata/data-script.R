@@ -12,8 +12,10 @@ c("Auto Cat Report", "Auto Loss Development", "CLSP") %>%
       walk(function(file_path) {
         file_path %>%
           read_csv(col_names = FALSE) %>%
-          mutate_all(~ sample(.x, length(.x))) %>%
-          sample_n(min(nrow(.), 500)) %>%
+          mutate_at(vars(-one_of(c("X13", "X46"))), ~ sample(.x, length(.x))) %>%
+          group_by(X13, X46) %>%
+          sample_n(min(n(), 100)) %>%
+          ungroup() %>%
           write_csv(file_path, col_names = FALSE, na = "")
       })
     dir_copy(folder_path,
