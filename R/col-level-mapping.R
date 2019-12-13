@@ -152,7 +152,10 @@ minor_coverage_type_mapping <- function() {
     "SP", "Specified Perils",
     "TPL", "Third Party Liability",
     "UA", "Uninsured Automobile",
-    "UM", "Underinsured Motorist"
+    "UM", "Underinsured Motorist",
+    # These are not documented (https://github.com/kasaai/gisadata/issues/25)
+    "ENTRUST_CM", "Comprehensive",
+    "ENTRUST_SP", "Specified Perils"
   )
 }
 
