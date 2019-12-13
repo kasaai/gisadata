@@ -141,6 +141,8 @@ minor_coverage_type_mapping <- function() {
     ~minor_coverage_type, ~minor_coverage_type_mapped,
     "AB", "Accident Benefits",
     "AP", "All Perils",
+    # BI is undocumented, see #25
+    "BI", "Bodily Injury",
     "CL", "Collision",
     "CM", "Comprehensive",
     "DC", "Direct Compensation",
