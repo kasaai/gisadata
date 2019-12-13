@@ -110,7 +110,7 @@ auto_factor_flag_mapping <- function() {
 
 fleet_flag_mapping <- function() {
   tibble::tribble(
-    ~fleet_flag, ~flee_flag_mapped,
+    ~fleet_flag, ~fleet_flag_mapped,
     "0", "No",
     "1", "Fleet rated",
     "2", "Synthetic fleet"
