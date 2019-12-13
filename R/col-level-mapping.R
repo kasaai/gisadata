@@ -78,7 +78,7 @@ liability_kind_of_loss_mapping <- function() {
     "61", "Bodily Injury - Pollution Liability",
     "62", "Property Damage - Pollution Liability",
     "69", "Other - Pollution Liability",
-    "70", "UNDOCUMENTED"
+    "70", "Auto Liability"
   )
 }
 
