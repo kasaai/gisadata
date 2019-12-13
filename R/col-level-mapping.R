@@ -110,7 +110,7 @@ auto_factor_flag_mapping <- function() {
 
 fleet_flag_mapping <- function() {
   tibble::tribble(
-    ~fleet_flag, ~flee_flag_mapped,
+    ~fleet_flag, ~fleet_flag_mapped,
     "0", "No",
     "1", "Fleet rated",
     "2", "Synthetic fleet"
@@ -130,7 +130,9 @@ major_coverage_type_mapping <- function() {
     "SP", "Specified Perils",
     "TPL", "Third Party Liability",
     "UA", "Uninsured Automobile",
-    "UM", "Underinsured Motorist"
+    "UM", "Underinsured Motorist",
+    # Not documented (https://github.com/kasaai/gisadata/issues/25)
+    "ENTRUST", "ENTRUST"
   )
 }
 
@@ -152,7 +154,10 @@ minor_coverage_type_mapping <- function() {
     "SP", "Specified Perils",
     "TPL", "Third Party Liability",
     "UA", "Uninsured Automobile",
-    "UM", "Underinsured Motorist"
+    "UM", "Underinsured Motorist",
+    # These are not documented (https://github.com/kasaai/gisadata/issues/25)
+    "ENTRUST_CM", "ENTRUST - Comprehensive",
+    "ENTRUST_SP", "ENTRUST - Specified Perils"
   )
 }
 
