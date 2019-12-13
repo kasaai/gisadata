@@ -44,10 +44,10 @@ We can extract the CSV files by calling `gisa_unzip()`:
 # By default, files are extracted to a temp directory
 extract_dir <- gisa_unzip("gisa-data")
 dir_ls(extract_dir)
-#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpLj1wTH/Auto Cat Report
-#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpLj1wTH/Auto Intro
-#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpLj1wTH/Auto Loss Development
-#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpLj1wTH/CLSP
+#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpgVDXCb/Auto Cat Report
+#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpgVDXCb/Auto Intro
+#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpgVDXCb/Auto Loss Development
+#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpgVDXCb/CLSP
 ```
 
 Read and process tables:
@@ -57,7 +57,7 @@ data_auto <- extract_dir %>%
   path("Auto Loss Development") %>% 
   gisa_process_auto_dev()
 
-data_auto$`Loss development exhibit - Private Passenger - All Perils` %>% 
+data_auto$`Loss development exhibit - Private Passenger - All Perils - AB` %>% 
   glimpse()
 #> Observations: 16,869
 #> Variables: 32
