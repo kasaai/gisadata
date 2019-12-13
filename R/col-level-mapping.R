@@ -133,7 +133,7 @@ major_coverage_type_mapping <- function() {
     "UA", "Uninsured Automobile",
     "UM", "Underinsured Motorist",
     # Not documented (https://github.com/kasaai/gisadata/issues/25)
-    "ENTRUST", "ENTRUST"
+    "ENTRUST", "Negligent Entrustment"
   )
 }
 
@@ -159,8 +159,8 @@ minor_coverage_type_mapping <- function() {
     "UA", "Uninsured Automobile",
     "UM", "Underinsured Motorist",
     # These are not documented (https://github.com/kasaai/gisadata/issues/25)
-    "ENTRUST_CM", "ENTRUST - Comprehensive",
-    "ENTRUST_SP", "ENTRUST - Specified Perils"
+    "ENTRUST_CM", "Negligent Entrustment - Comprehensive",
+    "ENTRUST_SP", "Negligent Entrustment - Specified Perils"
   )
 }
 
