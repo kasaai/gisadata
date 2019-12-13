@@ -1,5 +1,4 @@
 test_that("auto cat", {
-  library(tidyverse)
   data_dir <- gisa_data_dir()
 
   auto_cat <- data_dir %>%

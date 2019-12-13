@@ -1,6 +1,7 @@
 library(fs)
 library(purrr)
 library(readr)
+library(dplyr)
 
 gisa_data_dir <- function() {
   system.file("testdata", "gisa-data", package = "gisadata")
