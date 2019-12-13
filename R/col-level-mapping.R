@@ -172,6 +172,80 @@ loss_transfer_flag_mapping <- function() {
   )
 }
 
+auto_kind_of_loss_code_mapping <- function() {
+  tibble::tribble(
+    ~kind_of_loss_code, ~kind_of_loss_code_mapped,
+    "01", "Bodily Injury by passengers in the insured automobile",
+    "02", "Bodily Injury by any other third party",
+    "03", "Bodily Injury, OUTSIDE PROVINCE, by passenger in the insured automobile",
+    "04", "Bodily Injury, OUTSIDE PROVINCE, by any other third party.",
+    "05", "Bodily Injury, WITHIN PROVINCE, by passengers in the insured automobile",
+    "06", "Bodily Injury, WITHIN PROVINCE, by any other third party",
+    "07", "Loss Transfer provision (applies to the company making the loss transfer only)",
+    "09", "Property Damage",
+    "12", "Property Damage to insured vehicle, constituting a total loss when OEF 43/ NBEF 43R or 19A is applicable",
+    "14", "Damage to contents, not owned by the insured but under his care, custody or control",
+    "15", "Property Damage to third party vehicle, or contents thereof, or to other property not under the care, custody or control of the insured",
+    "16", "Other Property Damage to insured vehicle",
+    "17", "Property Damage to contents owned by the insured",
+    "18", "Loss of use",
+    "19", "Damage to trailer, not owned by the insured, but under his care, custody or control",
+    "20", "Collision claim",
+    "21", "Fire claim",
+    "22", "Theft Claim",
+    "23", "Theft of the entire vehicle",
+    "24", "Theft of contents of the vehicle",
+    "25", "Malicious mischief and vandalism",
+    "26", "Glass/windshield damage not caused by windstorm or hail",
+    "27", "All other claims",
+    "28", "Windstorm",
+    "29", "Hail",
+    "30", "Funeral services",
+    "31", "Medical expenses",
+    "32", "Death benefits",
+    "34", "Disability income benefits",
+    "35", "All Underinsured motorist claims",
+    "36", "Uninsured Automobile – Bodily Injury",
+    "38", "Uninsured Automobile – Property Damage",
+    "37", "Accidents occurring outside Alberta or Ontario and payments in excess of provincial benefits",
+    "39", "Uninsured and unidentified motorist benefits",
+    "40", "Funeral benefits",
+    "41", "Medical, excluding rehabilitation and extended care",
+    "42", "Death benefits",
+    "43", "Rehabilitation – renovations",
+    "44", "Disability income benefits",
+    "45", "Rehabilitation – other than renovations",
+    "46", "Attendant care",
+    "48", "Caregiver disability income benefits",
+    "49", "Replacement of clothing, hearing aids, glasses and other devices",
+    "60", "Loss Transfer recovery – funeral benefits",
+    "61", "Loss Transfer recovery – medical, excluding rehabilitation and extended care",
+    "62", "Loss Transfer recovery – death benefits",
+    "63", "Loss Transfer recovery – rehabilitation renovations",
+    "64", "Loss Transfer recovery – disability income benefits",
+    "65", "Loss Transfer recovery – rehabilitation other than renovations",
+    "66", "Loss Transfer recovery – Attendant care",
+    "68", "Loss Transfer recovery – caregiver disability income benefits",
+    "69", "Loss Transfer Recovery – replacement of clothing, hearing aids, glasses and other devices",
+    "80", "Employed/deemed employed disability income benefits",
+    "81", "Student disability income benefits",
+    "82", "All others – non earner disability income benefits",
+    "83", "Visitation expenses benefits",
+    "84", "Dependant care expenses benefits",
+    "85", "Housekeeping and home maintenance expenses benefits",
+    "86", "Costs of examinations",
+    "87", "All other including replacement of clothing, hearing aids, glasses and other devices",
+    "90", "Loss Transfer recovery – employed/deemed employed disability income benefits",
+    "91", "Loss Transfer recovery – student disability income benefits",
+    "92", "Loss Transfer recovery – all others – non earner disability income benefits",
+    "93", "Loss Transfer recovery – visitation expenses benefits",
+    "94", "Loss Transfer recovery – dependant care expenses benefits",
+    "95", "Loss Transfer recovery – housekeeping and home maintenance expenses benefits",
+    "96", "Loss Transfer recovery – cost of examinations",
+    "97", "Loss Transfer recovery – all other including replacement of clothing, hearing aids, glasses and other devices"
+  )
+}
+
 #' Map auto categorical variable levels
 #'
 #' @param data Data frame with tidy names.
@@ -183,7 +257,8 @@ gisa_auto_map_levels <- function(data) {
     map_levels(major_coverage_type_mapping()) %>%
     map_levels(minor_coverage_type_mapping()) %>%
     map_levels(loss_transfer_flag_mapping()) %>%
-    map_levels(paid_outstanding_indicator_mapping())
+    map_levels(paid_outstanding_indicator_mapping()) %>%
+    map_levels(auto_kind_of_loss_code_mapping())
 }
 
 
