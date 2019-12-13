@@ -41,4 +41,11 @@ test_that("auto cat", {
   walk(auto_cat, function(df) {
     expect_true(all(df$minor_coverage_type %in% minor_coverage_types))
   })
+
+  major_coverage_types <- gisadata:::major_coverage_type_mapping() %>%
+    pull(major_coverage_type_mapped)
+
+  walk(auto_cat, function(df) {
+    expect_true(all(df$major_coverage_type %in% major_coverage_types))
+  })
 })
