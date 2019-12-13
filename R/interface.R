@@ -71,7 +71,7 @@ gisa_process_auto_cat <- function(path) {
                   gisa_rename_cols() %>%
                   dplyr::mutate(file = stringr::str_extract(.y, "AUTO\\d{4}")) %>%
                   dplyr::left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
-    purrr::map(~ dplyr::group_split(.x, exhibit)) %>%
+    purrr::map(~ dplyr::group_split(.x, exhibit, province)) %>%
     purrr::flatten() %>%
     purrr::set_names(
       purrr::map_chr(., ~ paste0(unique(.x$exhibit), " - ", unique(.x$province)))
