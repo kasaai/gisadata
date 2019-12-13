@@ -48,4 +48,8 @@ test_that("auto cat", {
   walk(auto_cat, function(df) {
     expect_true(all(df$major_coverage_type %in% major_coverage_types))
   })
+
+  walk(auto_cat, function(df) {
+    expect_true(all(df$factor_flag %in% c("Yes", "No")))
+  })
 })
