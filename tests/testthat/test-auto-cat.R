@@ -18,7 +18,7 @@ test_that("auto cat", {
 
   expect_identical(
     auto_cat %>% map_dbl(nrow) %>% unname(),
-    rep(500, 6)
+    rep(100, 6)
   )
 
   walk(auto_cat, ~ expect_setequal(
