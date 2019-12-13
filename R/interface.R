@@ -26,7 +26,7 @@ gisa_process_clsp <- function(path) {
     purrr::flatten() %>%
     purrr::set_names(purrr::map_chr(., ~ unique(.x$exhibit))) %>%
     purrr::map(~ .x %>%
-          gisa_select_cols(dplyr::first(.x$format_number)) %>%
+          gisa_select_cols(unique(.x$format_number)) %>%
           gisa_liab_map_levels())
 }
 
@@ -52,7 +52,7 @@ gisa_process_auto_dev <- function(path) {
       purrr::map_chr(., ~ paste0(unique(.x$exhibit), " - ", unique(.x$province)))
     ) %>%
     purrr::map(~ .x %>%
-                 gisa_select_cols(dplyr::first(.x$format_number)) %>%
+                 gisa_select_cols(unique(.x$format_number)) %>%
                  gisa_auto_map_levels())
 }
 
@@ -77,6 +77,6 @@ gisa_process_auto_cat <- function(path) {
       purrr::map_chr(., ~ paste0(unique(.x$exhibit), " - ", unique(.x$province)))
     ) %>%
     purrr::map(~ .x %>%
-                 gisa_select_cols(dplyr::first(.x$format_number)) %>%
+                 gisa_select_cols(unique(.x$format_number)) %>%
                  gisa_auto_map_levels())
 }
