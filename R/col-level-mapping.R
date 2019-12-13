@@ -5,11 +5,26 @@ map_levels <- function(data, mapping_table) {
   mapped_col <- mt_names[[2]]
 
   if (original_col %in% colnames(data)) {
-    data %>%
+    num_na <- data[[original_col]] %>%
+      is.na() %>%
+      sum()
+
+
+    result <- data %>%
       dplyr::left_join(mapping_table,
                        by = original_col) %>%
       dplyr::select(-.data[[original_col]]) %>%
       dplyr::rename(!!original_col := .data[[mapped_col]])
+
+    num_is_na_after_join <- data[[original_col]] %>%
+      is.na() %>%
+      sum()
+
+    if (!identical(num_na, num_is_na_after_join)) {
+      stop("Unmapped levels found.", call. = FALSE)
+    }
+
+    result
   } else {
     data
   }
