@@ -114,4 +114,23 @@ test_that("auto dev", {
   walk(auto_dev, function(df) {
     expect_true(all(df$factor_flag %in% c("Yes", "No")))
   })
+
+  kols <- gisadata:::auto_kind_of_loss_code_mapping() %>%
+    pull(kind_of_loss_code_mapped) %>%
+    c(NA)
+
+  auto_dev %>%
+    names() %>%
+    discard(~ grepl("Exposures and Premium distribution", .x)) %>%
+    walk(function(exhibit) {
+      expect_true(
+        all(auto_dev[[exhibit]]$kind_of_loss_code %in% kols),
+        info = paste0("kind of loss code - ", exhibit)
+      )
+      expect_lt(
+        sum(is.na(auto_dev[[exhibit]]$kind_of_loss_code)),
+        nrow(auto_dev[[exhibit]])
+      )
+    })
+
 })
