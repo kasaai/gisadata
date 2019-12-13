@@ -57,4 +57,31 @@ test_that("clsp", {
       )
     }
   })
+
+  major_classes <- gisadata:::liability_major_class_mapping() %>%
+    pull(major_class_mapped)
+
+  clsp %>%
+    names() %>%
+    keep(~ grepl("Analysis by Large Incurred Losses by Coverage", .x)) %>%
+    walk(~ expect_true(all(clsp[[.x]]$major_class %in% major_classes)))
+
+  coverages <- gisadata:::liability_coverage_policy_form_mapping() %>%
+    pull(coverage_policy_form_mapped)
+
+  clsp %>%
+    names() %>%
+    keep(
+      ~ grepl("(Analysis by Large Incurred Losses by Coverage)|(Loss Development)", .x)
+    ) %>%
+    walk(~ expect_true(all(clsp[[.x]]$coverage_policy_form %in% coverages)))
+
+  kols <- gisadata:::liability_kind_of_loss_mapping() %>%
+    pull(kind_of_loss_code_mapped)
+
+  clsp %>%
+    names() %>%
+    keep(~ grepl("Loss Development", .x)) %>%
+    walk(~ expect_true(all(clsp[[.x]]$kind_of_loss_code %in% kols)))
+
 })
