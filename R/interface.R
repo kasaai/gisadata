@@ -7,78 +7,59 @@ NULL
 
 utils::globalVariables(".")
 
-#' @rdname gisa_process
-#' @export
-gisa_process_clsp <- function(path) {
-  col_specs <- gisa_col_specs()
-  headers <- gisa_headers()
-
+process_files <- function(path, col_names, col_types, file_regex, categorical_mapper) {
   path %>%
     fs::dir_ls() %>%
     purrr::map(readr::read_csv,
-               col_names = headers$liability,
-               col_types = col_specs$liability) %>%
+               col_names = col_names,
+               col_types = col_types) %>%
     purrr::imap(~ .x %>%
-           gisa_rename_cols() %>%
-           dplyr::mutate(file = stringr::str_extract(.y, "LIAB\\d{4}")) %>%
-           dplyr::left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
+                  gisa_rename_cols() %>%
+                  dplyr::mutate(file = stringr::str_extract(.y, file_regex)) %>%
+                  dplyr::left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
     purrr::map(~ dplyr::group_split(.x, exhibit, province)) %>%
     purrr::flatten() %>%
     purrr::set_names(
       purrr::map_chr(., ~ paste0(unique(.x$exhibit), " - ", unique(.x$province)))
     ) %>%
     purrr::map(~ .x %>%
-          gisa_select_cols(unique(.x$format_number)) %>%
-          gisa_liab_map_levels())
+                 gisa_select_cols(unique(.x$format_number)) %>%
+                 categorical_mapper())
+}
+
+#' @rdname gisa_process
+#' @export
+gisa_process_clsp <- function(path) {
+  process_files(
+    path = path,
+    col_names = gisa_headers()$liability,
+    col_types = gisa_col_specs()$liability,
+    file_regex = "LIAB\\d{4}",
+    categorical_mapper = gisa_liab_map_levels
+  )
 }
 
 
 #' @rdname gisa_process
 #' @export
 gisa_process_auto_dev <- function(path) {
-  col_specs <- gisa_col_specs()
-  headers <- gisa_headers()
-
-  path %>%
-    fs::dir_ls() %>%
-    purrr::map(readr::read_csv,
-               col_names = headers$auto,
-               col_types = col_specs$auto) %>%
-    purrr::imap(~ .x %>%
-                  gisa_rename_cols() %>%
-                  dplyr::mutate(file = stringr::str_extract(.y, "AUTO\\d{4}")) %>%
-                  dplyr::left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
-    purrr::map(~ dplyr::group_split(.x, exhibit, province)) %>%
-    purrr::flatten() %>%
-    purrr::set_names(
-      purrr::map_chr(., ~ paste0(unique(.x$exhibit), " - ", unique(.x$province)))
-    ) %>%
-    purrr::map(~ .x %>%
-                 gisa_select_cols(unique(.x$format_number)) %>%
-                 gisa_auto_map_levels())
+  process_files(
+    path = path,
+    col_names = gisa_headers()$auto,
+    col_types = gisa_col_specs()$auto,
+    file_regex = "AUTO\\d{4}",
+    categorical_mapper = gisa_auto_map_levels
+  )
 }
 
 #' @rdname gisa_process
 #' @export
 gisa_process_auto_cat <- function(path) {
-  col_specs <- gisa_col_specs()
-  headers <- gisa_headers()
-
-  path %>%
-    fs::dir_ls() %>%
-    purrr::map(readr::read_csv,
-               col_names = headers$auto_cat,
-               col_types = col_specs$auto_cat) %>%
-    purrr::imap(~ .x %>%
-                  gisa_rename_cols() %>%
-                  dplyr::mutate(file = stringr::str_extract(.y, "AUTO\\d{4}")) %>%
-                  dplyr::left_join(gisa_exhibit_mapping(), by = c("file", "section_number"))) %>%
-    purrr::map(~ dplyr::group_split(.x, exhibit, province)) %>%
-    purrr::flatten() %>%
-    purrr::set_names(
-      purrr::map_chr(., ~ paste0(unique(.x$exhibit), " - ", unique(.x$province)))
-    ) %>%
-    purrr::map(~ .x %>%
-                 gisa_select_cols(unique(.x$format_number)) %>%
-                 gisa_auto_map_levels())
+  process_files(
+    path = path,
+    col_names = gisa_headers()$auto_cat,
+    col_types = gisa_col_specs()$auto_cat,
+    file_regex = "AUTO\\d{4}",
+    categorical_mapper = gisa_auto_map_levels
+  )
 }
