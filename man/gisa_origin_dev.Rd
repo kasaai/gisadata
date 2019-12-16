@@ -16,3 +16,4 @@ gisa_origin_dev(data, accident_col, entry_col)
 \description{
 Compute origin and development periods
 }
+\keyword{internal}
