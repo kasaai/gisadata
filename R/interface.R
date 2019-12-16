@@ -63,3 +63,30 @@ gisa_process_auto_cat <- function(path) {
     categorical_mapper = gisa_auto_map_levels
   )
 }
+
+#' Compute origin and development periods
+#'
+#' @param data Data frame with loss development data.
+#' @param accident_col Column corresponding to accident half year, as an unquoted string.
+#' @param entry_col Column corresponding to entry half year, as an unquoted string.
+#' @export
+gisa_origin_dev <- function(data, accident_col, entry_col) {
+  accident_col <- rlang::enquo(accident_col)
+  entry_col <- rlang::enquo(entry_col)
+  data %>%
+    dplyr::mutate(
+      origin = end_of_period(!!accident_col),
+      dev = end_of_period(!!entry_col),
+      dev_months = round(lubridate::interval(.data$origin, .data$dev) /
+                           lubridate::duration(1, "months")) %>%
+        as.integer()
+    )
+}
+
+end_of_period <- function(x) {
+  yr <- substr(x, 1, 4)
+  half <- substr(x, 5, 6)
+  lubridate::ymd(paste(yr, as.integer(half) * 6, "01", sep = "-")) %>%
+    lubridate::ceiling_date("months") %>%
+    `-`(lubridate::days(1))
+}
