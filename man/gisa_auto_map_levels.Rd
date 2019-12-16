@@ -12,3 +12,4 @@ gisa_auto_map_levels(data)
 \description{
 Map auto categorical variable levels
 }
+\keyword{internal}

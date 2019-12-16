@@ -1,6 +1,7 @@
 #' GISA data column specs
 #'
 #' @importFrom readr col_double col_character col_skip col_integer
+#' @keywords internal
 gisa_col_specs <- function() {
   auto_cols <- list(
     WrittenVehicles = col_double(),

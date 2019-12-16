@@ -9,3 +9,4 @@ gisa_col_specs()
 \description{
 GISA data column specs
 }
+\keyword{internal}
