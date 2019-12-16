@@ -91,7 +91,8 @@ test_that("auto dev", {
           "grid_indicator", "first_chance_indicator", "region", "province",
           "deductible_amount", "limit_amount", "kind_of_loss_code", "entry_half_year",
           "accident_half_year", "factor_flag", "fleet_flag", "major_coverage_type",
-          "minor_coverage_type", "loss_transfer_flag", "paid_outstanding_indicator"
+          "minor_coverage_type", "loss_transfer_flag", "paid_outstanding_indicator",
+          "origin_period_end", "development_period_end", "development_month"
         )
       )
     }
@@ -136,8 +137,8 @@ test_that("auto dev", {
   # Check to see all dev months are divisible by 6
   mod6 <- auto_dev %>%
     discard(., grepl("Exposures and Premium distribution", names(.))) %>%
-    map(~ gisa_origin_dev(.x, .data$accident_half_year, .data$entry_half_year) %>%
-          dplyr::pull(.data$dev_months) %>%
+    map(~ .x %>%
+          dplyr::pull(.data$development_month) %>%
           `%%`(6)) %>%
     flatten_dbl()
 
