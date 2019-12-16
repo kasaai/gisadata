@@ -133,4 +133,13 @@ test_that("auto dev", {
       )
     })
 
+  # Check to see all dev months are divisible by 6
+  mod6 <- auto_dev %>%
+    discard(., grepl("Exposures and Premium distribution", names(.))) %>%
+    map(~ gisa_origin_dev(.x, .data$accident_half_year, .data$entry_half_year) %>%
+          dplyr::pull(.data$dev_months) %>%
+          `%%`(6)) %>%
+    flatten_dbl()
+
+  expect_identical(unique(mod6), 0)
 })
