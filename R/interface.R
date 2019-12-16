@@ -94,7 +94,8 @@ gisa_origin_dev <- function(data, accident_col, entry_col) {
         lubridate::interval(.data$origin_period_end, .data$development_period_end) /
           lubridate::duration(1, "months")
       ) %>%
-        as.integer()
+        as.integer() %>%
+        `+`(6L)
     )
 }
 
@@ -104,4 +105,29 @@ end_of_period <- function(x) {
   lubridate::ymd(paste(yr, as.integer(half) * 6, "01", sep = "-")) %>%
     lubridate::ceiling_date("months") %>%
     `-`(lubridate::days(1))
+}
+
+#' Extract triangle
+#'
+#' @param data A loss development exhibit table.
+#' @param type Either "Paid" or "Outstanding".
+#' @export
+gisa_extract_triangle <- function(data, type = c("Paid", "Outstanding")) {
+  type <- match.arg(type)
+
+  triangle <- data %>%
+    dplyr::filter(paid_outstanding_indicator == type) %>%
+    dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
+    dplyr::summarize(paid_loss = sum(loss_amount)) %>%
+    tidyr::pivot_wider(names_from = .data$development_month, values_from = .data$paid_loss,
+                       values_fill = list(paid_loss = 0))
+
+  dev_months <- triangle %>%
+    names() %>%
+    setdiff("accident_half_year") %>%
+    as.integer() %>%
+    sort()
+
+  triangle %>%
+    dplyr::select(.data$accident_half_year, as.character(.data$dev_months))
 }
