@@ -129,5 +129,6 @@ gisa_extract_triangle <- function(data, type = c("Paid", "Outstanding")) {
     sort()
 
   triangle %>%
-    dplyr::select(.data$accident_half_year, as.character(.data$dev_months))
+    dplyr::select(.data$accident_half_year, as.character(.data$dev_months)) %>%
+    dplyr::ungroup()
 }
