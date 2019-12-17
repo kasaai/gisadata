@@ -116,9 +116,9 @@ gisa_extract_triangle <- function(data, type = c("Paid", "Outstanding")) {
   type <- match.arg(type)
 
   triangle <- data %>%
-    dplyr::filter(paid_outstanding_indicator == type) %>%
+    dplyr::filter(.data$paid_outstanding_indicator == type) %>%
     dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
-    dplyr::summarize(paid_loss = sum(loss_amount)) %>%
+    dplyr::summarize(paid_loss = sum(.data$loss_amount)) %>%
     tidyr::pivot_wider(names_from = .data$development_month, values_from = .data$paid_loss,
                        values_fill = list(paid_loss = 0))
 
