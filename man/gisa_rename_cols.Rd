@@ -12,3 +12,4 @@ gisa_rename_cols(data)
 \description{
 Rename columns
 }
+\keyword{internal}

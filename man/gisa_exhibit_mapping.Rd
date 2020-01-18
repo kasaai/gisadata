@@ -9,3 +9,4 @@ gisa_exhibit_mapping()
 \description{
 Exhibit  mapping
 }
+\keyword{internal}

@@ -108,6 +108,7 @@ paid_outstanding_indicator_mapping <- function() {
 #' Map liability categorical variable levels
 #'
 #' @param data Data frame with tidy names.
+#' @keywords internal
 gisa_liab_map_levels <- function(data) {
   data %>%
     map_levels(liability_major_class_mapping()) %>%
@@ -264,6 +265,7 @@ auto_kind_of_loss_code_mapping <- function() {
 #' Map auto categorical variable levels
 #'
 #' @param data Data frame with tidy names.
+#' @keywords internal
 gisa_auto_map_levels <- function(data) {
 
   data %>%
