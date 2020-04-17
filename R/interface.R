@@ -124,13 +124,17 @@ generate_dev_months <- function(x) {
 #' @importFrom lubridate ymd
 #' @export
 gisa_extract_triangle <- function(data, type = c("paid", "incurred"),
+                                  minor_coverage_type,
                                   evaluation_date = ymd("2018-12-31")) {
   type <- match.arg(type)
+
+  data <- data %>%
+    filter(.data$minor_coverage_type == !!minor_coverage_type)
 
   triangle_data <- data %>%
     dplyr::filter(.data$paid_outstanding_indicator == "Paid") %>%
     dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
-    dplyr::summarize(paid_loss = sum(.data$loss_amount)) %>%
+    dplyr::summarize(paid_loss = sum(.data$loss_and_expense_amount)) %>%
     dplyr::ungroup() %>%
     tidyr::complete(.data$accident_half_year,
                     development_month = generate_dev_months(.data$development_month),
@@ -147,8 +151,12 @@ gisa_extract_triangle <- function(data, type = c("paid", "incurred"),
     outstanding <- data %>%
       dplyr::filter(.data$paid_outstanding_indicator == "Outstanding") %>%
       dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
-      dplyr::summarize(outstanding = sum(.data$loss_amount)) %>%
-      dplyr::select(.data$accident_half_year, .data$development_month, .data$outstanding)
+      dplyr::summarize(outstanding = sum(.data$loss_and_expense_amount)) %>%
+      dplyr::select(.data$accident_half_year, .data$development_month, .data$outstanding) %>%
+      dplyr::ungroup() %>%
+      tidyr::complete(.data$accident_half_year,
+                      development_month = generate_dev_months(.data$development_month)) %>%
+      tidyr::fill(.data$outstanding, .direction = "down")
 
     triangle_data <- triangle_data %>%
       dplyr::left_join(outstanding, by = c("accident_half_year", "development_month")) %>%
