@@ -113,6 +113,10 @@ compute_report_date <- function(accident_half_year, development_month) {
     months(development_month)
 }
 
+generate_dev_months <- function(x) {
+  seq_len(max(x) / 6) * 6
+}
+
 #' Extract triangle
 #'
 #' @param data A loss development exhibit table.
@@ -128,7 +132,8 @@ gisa_extract_triangle <- function(data, type = c("paid", "incurred"),
     dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
     dplyr::summarize(paid_loss = sum(.data$loss_amount)) %>%
     dplyr::ungroup() %>%
-    tidyr::complete(.data$accident_half_year, .data$development_month,
+    tidyr::complete(.data$accident_half_year,
+                    development_month = generate_dev_months(.data$development_month),
                     fill = list(paid_loss = 0)) %>%
     dplyr::mutate(
       report_date = compute_report_date(.data$accident_half_year, .data$development_month)
