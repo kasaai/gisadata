@@ -110,7 +110,7 @@ end_of_period <- function(x) {
 compute_report_date <- function(accident_half_year, development_month) {
   md <- ifelse(substr(accident_half_year, 5, 6) == "01", "0630", "1231")
   lubridate::ymd(paste0(substr(accident_half_year, 1, 4), md)) %m+%
-    months(development_month)
+    months(as.integer(development_month - 6))
 }
 
 generate_dev_months <- function(x) {
