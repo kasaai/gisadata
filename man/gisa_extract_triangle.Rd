@@ -4,12 +4,12 @@
 \alias{gisa_extract_triangle}
 \title{Extract triangle}
 \usage{
-gisa_extract_triangle(data, type = c("Paid", "Outstanding"))
+gisa_extract_triangle(data, type = c("paid", "incurred"))
 }
 \arguments{
 \item{data}{A loss development exhibit table.}
 
-\item{type}{Either "Paid" or "Outstanding".}
+\item{type}{Either "paid" or "incurred".}
 }
 \description{
 Extract triangle
