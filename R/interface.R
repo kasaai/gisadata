@@ -121,7 +121,9 @@ generate_dev_months <- function(x) {
 #'
 #' @param data A loss development exhibit table.
 #' @param type One of "paid", "incurred", or "count".
-#' @importFrom lubridate ymd
+#' @param minor_coverage_type Minor coverage type.
+#' @param evaluation_date Evaluation date.
+#' @importFrom lubridate ymd %m+%
 #' @export
 gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
                                   minor_coverage_type,
@@ -129,7 +131,7 @@ gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
   type <- match.arg(type)
 
   data <- data %>%
-    filter(.data$minor_coverage_type == !!minor_coverage_type)
+    dplyr::filter(.data$minor_coverage_type == !!minor_coverage_type)
 
   dev_months <- data %>%
     dplyr::pull("development_month") %>%
@@ -139,17 +141,17 @@ gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
 
     paid_counts <- data %>%
       dplyr::filter(.data$paid_outstanding_indicator == "Paid") %>%
-      group_by(accident_half_year, development_month) %>%
-      summarize(claim_count = sum(claim_count)) %>%
+      dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
+      dplyr::summarize(claim_count = sum(.data$claim_count)) %>%
       dplyr::arrange(.data$accident_half_year, .data$development_month) %>%
-      mutate(claim_count = cumsum(claim_count)) %>%
+      dplyr::mutate(claim_count = cumsum(.data$claim_count)) %>%
       tidyr::complete(.data$accident_half_year,
-                      development_month = dev_months,
+                      development_month = !!dev_months,
                       fill = list(claim_count = 0)) %>%
       dplyr::mutate(
         report_date = compute_report_date(.data$accident_half_year, .data$development_month)
       ) %>%
-      dplyr::filter(report_date <= evaluation_date) %>%
+      dplyr::filter(.data$report_date <= !!evaluation_date) %>%
       dplyr::group_by(.data$accident_half_year) %>%
       dplyr::arrange(.data$accident_half_year, .data$development_month) %>%
       tidyr::fill(.data$claim_count, .direction = "down") %>%
@@ -178,12 +180,12 @@ gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
       dplyr::summarize(paid_loss = sum(.data$loss_and_expense_amount)) %>%
       dplyr::ungroup() %>%
       tidyr::complete(.data$accident_half_year,
-                      development_month = dev_months,
+                      development_month = !!dev_months,
                       fill = list(paid_loss = 0)) %>%
       dplyr::mutate(
         report_date = compute_report_date(.data$accident_half_year, .data$development_month)
       ) %>%
-      dplyr::filter(report_date <= evaluation_date) %>%
+      dplyr::filter(.data$report_date <= !!evaluation_date) %>%
       dplyr::group_by(.data$accident_half_year) %>%
       dplyr::arrange(.data$accident_half_year, .data$development_month) %>%
       dplyr::mutate(value = cumsum(.data$paid_loss))
