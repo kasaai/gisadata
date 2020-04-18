@@ -210,7 +210,7 @@ gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
   triangle <- triangle_data %>%
     dplyr::select(.data$accident_half_year, .data$development_month, .data$value) %>%
     tidyr::pivot_wider(names_from = .data$development_month, values_from = .data$value,
-                       values_fill = list(value = 0))
+                       values_fill = list(value = NA))
 
   dev_months <- triangle %>%
     names() %>%
