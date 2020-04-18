@@ -130,12 +130,12 @@ gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
                                   evaluation_date = ymd("2018-12-31")) {
   type <- match.arg(type)
 
-  data <- data %>%
-    dplyr::filter(.data$minor_coverage_type == !!minor_coverage_type)
-
   dev_months <- data %>%
     dplyr::pull("development_month") %>%
     generate_dev_months()
+
+  data <- data %>%
+    dplyr::filter(.data$minor_coverage_type == !!minor_coverage_type)
 
   if (type == "count") {
 
@@ -143,8 +143,7 @@ gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
       dplyr::filter(.data$paid_outstanding_indicator == "Paid") %>%
       dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
       dplyr::summarize(claim_count = sum(.data$claim_count)) %>%
-      dplyr::arrange(.data$accident_half_year, .data$development_month) %>%
-      dplyr::mutate(claim_count = cumsum(.data$claim_count)) %>%
+      ungroup() %>%
       tidyr::complete(.data$accident_half_year,
                       development_month = !!dev_months,
                       fill = list(claim_count = 0)) %>%
@@ -155,7 +154,7 @@ gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
       dplyr::group_by(.data$accident_half_year) %>%
       dplyr::arrange(.data$accident_half_year, .data$development_month) %>%
       tidyr::fill(.data$claim_count, .direction = "down") %>%
-      dplyr::rename(value =.data$claim_count)
+      dplyr::mutate(value = cumsum(.data$claim_count))
 
     outstanding_counts <- data %>%
       dplyr::filter(.data$paid_outstanding_indicator == "Outstanding") %>%
