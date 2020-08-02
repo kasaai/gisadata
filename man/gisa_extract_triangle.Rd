@@ -7,7 +7,6 @@
 gisa_extract_triangle(
   data,
   type = c("paid", "incurred", "count"),
-  minor_coverage_type,
   evaluation_date = ymd("2018-12-31")
 )
 }
@@ -15,8 +14,6 @@ gisa_extract_triangle(
 \item{data}{A loss development exhibit table.}
 
 \item{type}{One of "paid", "incurred", or "count".}
-
-\item{minor_coverage_type}{Minor coverage type.}
 
 \item{evaluation_date}{Evaluation date.}
 }

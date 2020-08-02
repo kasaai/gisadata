@@ -121,21 +121,16 @@ generate_dev_months <- function(x) {
 #'
 #' @param data A loss development exhibit table.
 #' @param type One of "paid", "incurred", or "count".
-#' @param minor_coverage_type Minor coverage type.
 #' @param evaluation_date Evaluation date.
 #' @importFrom lubridate ymd %m+%
 #' @export
 gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
-                                  minor_coverage_type,
                                   evaluation_date = ymd("2018-12-31")) {
   type <- match.arg(type)
 
   dev_months <- data %>%
     dplyr::pull("development_month") %>%
     generate_dev_months()
-
-  data <- data %>%
-    dplyr::filter(.data$minor_coverage_type == !!minor_coverage_type)
 
   if (type == "count") {
 
