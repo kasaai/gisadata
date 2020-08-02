@@ -107,20 +107,105 @@ end_of_period <- function(x) {
     `-`(lubridate::days(1))
 }
 
+compute_report_date <- function(accident_half_year, development_month) {
+  md <- ifelse(substr(accident_half_year, 5, 6) == "01", "0630", "1231")
+  lubridate::ymd(paste0(substr(accident_half_year, 1, 4), md)) %m+%
+    months(as.integer(development_month - 6))
+}
+
+generate_dev_months <- function(x) {
+  seq_len(max(x) / 6) * 6
+}
+
 #' Extract triangle
 #'
 #' @param data A loss development exhibit table.
-#' @param type Either "Paid" or "Outstanding".
+#' @param type One of "paid", "incurred", or "count".
+#' @param evaluation_date Evaluation date.
+#' @importFrom lubridate ymd %m+%
 #' @export
-gisa_extract_triangle <- function(data, type = c("Paid", "Outstanding")) {
+gisa_extract_triangle <- function(data, type = c("paid", "incurred", "count"),
+                                  evaluation_date = ymd("2018-12-31")) {
   type <- match.arg(type)
 
-  triangle <- data %>%
-    dplyr::filter(.data$paid_outstanding_indicator == type) %>%
-    dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
-    dplyr::summarize(paid_loss = sum(.data$loss_amount)) %>%
-    tidyr::pivot_wider(names_from = .data$development_month, values_from = .data$paid_loss,
-                       values_fill = list(paid_loss = 0))
+  dev_months <- data %>%
+    dplyr::pull("development_month") %>%
+    generate_dev_months()
+
+  if (type == "count") {
+
+    paid_counts <- data %>%
+      dplyr::filter(.data$paid_outstanding_indicator == "Paid") %>%
+      dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
+      dplyr::summarize(claim_count = sum(.data$claim_count)) %>%
+      ungroup() %>%
+      tidyr::complete(.data$accident_half_year,
+                      development_month = !!dev_months,
+                      fill = list(claim_count = 0)) %>%
+      dplyr::mutate(
+        report_date = compute_report_date(.data$accident_half_year, .data$development_month)
+      ) %>%
+      dplyr::filter(.data$report_date <= !!evaluation_date) %>%
+      dplyr::group_by(.data$accident_half_year) %>%
+      dplyr::arrange(.data$accident_half_year, .data$development_month) %>%
+      tidyr::fill(.data$claim_count, .direction = "down") %>%
+      dplyr::mutate(value = cumsum(.data$claim_count))
+
+    outstanding_counts <- data %>%
+      dplyr::filter(.data$paid_outstanding_indicator == "Outstanding") %>%
+      dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
+      dplyr::summarize(outstanding = sum(.data$claim_count)) %>%
+      dplyr::select(.data$accident_half_year, .data$development_month, .data$outstanding) %>%
+      dplyr::ungroup() %>%
+      tidyr::complete(.data$accident_half_year,
+                      development_month = dev_months) %>%
+      tidyr::fill(.data$outstanding, .direction = "down")
+
+    triangle_data <- paid_counts %>%
+      dplyr::left_join(outstanding_counts, by = c("accident_half_year", "development_month")) %>%
+      dplyr::mutate_at("outstanding", ~ ifelse(is.na(.x), 0, .x)) %>%
+      dplyr::mutate(value = .data$value + .data$outstanding)
+
+  } else {
+
+    triangle_data <- data %>%
+      dplyr::filter(.data$paid_outstanding_indicator == "Paid") %>%
+      dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
+      dplyr::summarize(paid_loss = sum(.data$loss_and_expense_amount)) %>%
+      dplyr::ungroup() %>%
+      tidyr::complete(.data$accident_half_year,
+                      development_month = !!dev_months,
+                      fill = list(paid_loss = 0)) %>%
+      dplyr::mutate(
+        report_date = compute_report_date(.data$accident_half_year, .data$development_month)
+      ) %>%
+      dplyr::filter(.data$report_date <= !!evaluation_date) %>%
+      dplyr::group_by(.data$accident_half_year) %>%
+      dplyr::arrange(.data$accident_half_year, .data$development_month) %>%
+      dplyr::mutate(value = cumsum(.data$paid_loss))
+
+    if (identical(type, "incurred")) {
+      outstanding <- data %>%
+        dplyr::filter(.data$paid_outstanding_indicator == "Outstanding") %>%
+        dplyr::group_by(.data$accident_half_year, .data$development_month) %>%
+        dplyr::summarize(outstanding = sum(.data$loss_and_expense_amount)) %>%
+        dplyr::select(.data$accident_half_year, .data$development_month, .data$outstanding) %>%
+        dplyr::ungroup() %>%
+        tidyr::complete(.data$accident_half_year,
+                        development_month = generate_dev_months(.data$development_month)) %>%
+        tidyr::fill(.data$outstanding, .direction = "down")
+
+      triangle_data <- triangle_data %>%
+        dplyr::left_join(outstanding, by = c("accident_half_year", "development_month")) %>%
+        dplyr::mutate_at("outstanding", ~ ifelse(is.na(.x), 0, .x)) %>%
+        dplyr::mutate(value = .data$value + .data$outstanding)
+    }
+  }
+
+  triangle <- triangle_data %>%
+    dplyr::select(.data$accident_half_year, .data$development_month, .data$value) %>%
+    tidyr::pivot_wider(names_from = .data$development_month, values_from = .data$value,
+                       values_fill = list(value = NA))
 
   dev_months <- triangle %>%
     names() %>%
