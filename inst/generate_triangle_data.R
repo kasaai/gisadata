@@ -1,11 +1,11 @@
 # Select HRGs for analysis – I propose the following ten HRGs:
-#   
+#
 #   * Ontario (ON)
 #     * TPL - BI
 #     * AB - MR
 #     * AB - DI
 #     * CL
-# 
+#
 #   * Alberta (AB)
 #     * TPL - BI
 #     * CL
@@ -13,7 +13,7 @@
 #   * Nova Scotia (NS)
 #     * TPL-BI
 #     * CL
-# 
+#
 #   * Atlantic Canada combined (NS, NL, PE, NB)
 #     * TPL-BI
 #     * CL
@@ -25,6 +25,7 @@ library(tidyverse)
 # Extract and load raw data
 
 extract_dir <- gisa_unzip("gisa-data")
+
 data_auto <- extract_dir %>%
   path("Auto Loss Development") %>%
   gisa_process_auto_dev()
@@ -84,7 +85,7 @@ ON_names
 generate_template_data(
   data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - ON"]] %>%
     filter(grepl("^Bodily Injury", kind_of_loss_code)),
-  data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - ON"]] %>% 
+  data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - ON"]] %>%
     filter(major_coverage_type == "Third Party Liability"),
   "output/Ontario_TPL_BI.xlsx"
 )
@@ -96,7 +97,7 @@ generate_template_data(
     filter(kind_of_loss_code %in% c("Medical, excluding rehabilitation and extended care",
                                     "Rehabilitation - other than renovations",
                                     "Rehabilitation - renovations")),
-  data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - ON"]] %>% 
+  data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - ON"]] %>%
     filter(major_coverage_type == "Accident Benefits"),
   "output/Ontario_AB_MR.xlsx"
 )
@@ -106,7 +107,7 @@ generate_template_data(
 generate_template_data(
   data_auto[["Loss development exhibit - Private Passenger - Accident Benefits - ON"]] %>%
     filter(grepl("^.*disability.*$", kind_of_loss_code)),
-  data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - ON"]] %>% 
+  data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - ON"]] %>%
     filter(major_coverage_type == "Accident Benefits"),
   "output/Ontario_AB_DI.xlsx"
 )
@@ -165,11 +166,11 @@ generate_template_data(
   data_auto[["Loss development exhibit - Private Passenger - Collision - NS"]],
   data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - NS"]] %>%
     filter(major_coverage_type == "Collision"),
-  "output/NS_Collision.xlsx"
+  "output/Nova_Scotia_Collision.xlsx"
 )
 
 
-##  Atlantic Canada: NS, NL, PE, NB - 
+##  Atlantic Canada: NS, NL, PE, NB -
 
 c(NS_names, NL_names, PE_names, NB_names)
 
@@ -180,7 +181,7 @@ all.equal(names(data_auto[["Loss development exhibit - Private Passenger - Third
           names(data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - PE"]]),
           names(data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - NB"]]))
 
-data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - AC"]] <- 
+data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - AC"]] <-
   union(data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - NS"]],
         data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - NL"]],
         data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - PE"]],
@@ -191,7 +192,7 @@ all.equal(names(data_auto[["Loss development exhibit - Private Passenger - Expos
           names(data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - PE"]]),
           names(data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - NB"]]))
 
-data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - AC"]] <- 
+data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - AC"]] <-
   union(data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - NS"]],
         data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - NL"]],
         data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - PE"]],
@@ -202,7 +203,7 @@ generate_template_data(
     filter(grepl("^Bodily Injury.*$", kind_of_loss_code)),
   data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - AC"]] %>%
     filter(major_coverage_type == "Third Party Liability"),
-  "output/AC_TPL_BI.xlsx"
+  "output/Atlantic_Canada_TPL_BI.xlsx"
 )
 
 # AC - CL
@@ -212,7 +213,7 @@ all.equal(names(data_auto[["Loss development exhibit - Private Passenger - Colli
           names(data_auto[["Loss development exhibit - Private Passenger - Collision - PE"]]),
           names(data_auto[["Loss development exhibit - Private Passenger - Collision - NB"]]))
 
-data_auto[["Loss development exhibit - Private Passenger - Collision - AC"]] <- 
+data_auto[["Loss development exhibit - Private Passenger - Collision - AC"]] <-
   union(data_auto[["Loss development exhibit - Private Passenger - Collision - NS"]],
         data_auto[["Loss development exhibit - Private Passenger - Collision - NL"]],
         data_auto[["Loss development exhibit - Private Passenger - Collision - PE"]],
@@ -222,6 +223,6 @@ generate_template_data(
   data_auto[["Loss development exhibit - Private Passenger - Collision - AC"]],
   data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - AC"]] %>%
     filter(major_coverage_type == "Collision"),
-  "output/AC_Collision.xlsx"
+  "output/Atlantic_Canada_Collision.xlsx"
 )
 

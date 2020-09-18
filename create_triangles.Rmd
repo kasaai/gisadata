@@ -1,0 +1,206 @@
+---
+title: "Create Gisa Triangles"
+author: "Marco De Virgilis"
+date: "9/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+# Introduction
+
+This document shows how to create run-off triangles from the GISA data.  
+It is assumed that the data itself (`Auto Cat Report.zip`, `Auto Intro.zip`, `Auto Loss Development.zip`, `CLSP.zip`) has already been downloaded since it is not uploaded on the git repo.  
+The main script needed for the process is `generate_triangle_data.R` located in the `inst` folder. The next session will describe each step in the script file.
+
+# generate_triangle_data.R
+
+As proposed by Jacque the aggregated triangles will be produced on the following rules, based on Region and LoB:
+
+   * Ontario (ON)
+     * TPL - BI
+     * AB - MR
+     * AB - DI
+     * CL
+
+   * Alberta (AB)
+     * TPL - BI
+     * CL
+
+   * Nova Scotia (NS)
+     * TPL-BI
+     * CL
+
+   * Atlantic Canada combined (NS, NL, PE, NB)
+     * TPL-BI
+     * CL
+
+## Loading the required libraries
+
+The libraries required for the analysis are:
+
+```{r libraries}
+library(gisadata) # can be installed with `remotes::install_github("kasaai/gisadata")`
+library(fs)
+library(tidyverse)
+```
+
+Let's suppose we have the 4 zip files downloaded in the `gisa_data` directory
+```{r list}
+dir_ls("gisa-data")
+#> gisa-data/Auto Cat Report.zip       gisa-data/Auto Intro.zip            
+#> gisa-data/Auto Loss Development.zip gisa-data/CLSP.zip
+```
+
+We can then extract the CSV files with the function `gisa_unzip()` in the `gisadata` package:
+```{r extract}
+# By default, files are extracted to a temp directory, however it is possible to set the destination location with the function argument extract_dir = ...
+extract_dir <- gisa_unzip("gisa-data")
+dir_ls(extract_dir)
+#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpCZoaQN/Auto Cat Report
+#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpCZoaQN/Auto Intro
+#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpCZoaQN/Auto Loss Development
+#> /var/folders/lm/wwpd13g55cz3wf0gn594b59w0000gn/T/RtmpCZoaQN/CLSP
+```
+
+The function `extract_dir` extracts the CVS's and returns the path.  
+Now we can read and process the required tables:
+```{r process}
+data_auto <- extract_dir %>% 
+  path("Auto Loss Development") %>% 
+  gisa_process_auto_dev()
+
+data_auto$`Loss development exhibit - Private Passenger - All Perils - AB` %>% 
+  glimpse()
+#> Observations: 16,869
+#> Variables: 32
+#> $ written_vehicles           <dbl> 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.…
+#> $ earned_vehicles            <dbl> 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.…
+#> $ written_premium            <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -7386, 0,…
+#> $ earned_premium             <dbl> 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.…
+#> $ claim_count                <dbl> 1, 15, 3, 21, 2, 19, 8, 0, 1, 0, 0, 0, 66,…
+#> $ claim_count_original       <dbl> 1, 15, 3, 21, 2, 19, 8, 0, 1, 0, 0, 0, 66,…
+#> $ claim_count_ompp           <dbl> 1, 15, 3, 21, 2, 19, 8, 0, 1, 0, 0, 0, 66,…
+#> $ loss_amount                <dbl> 3497, 11725, 6380, 89815, 16872, 77393, 26…
+#> $ expense_amount             <dbl> 1243, 0, 374, 4268, 135, 4177, 260, 0, 0, …
+#> $ loss_and_expense_amount    <dbl> 4740, 11725, 6754, 94083, 17007, 81570, 26…
+#> $ section_number             <chr> "5", "5", "5", "5", "5", "5", "5", "5", "5…
+#> $ valuation_year             <chr> "201812", "201812", "201812", "201812", "2…
+#> $ company_identification     <chr> "000", "000", "000", "000", "000", "000", …
+#> $ major_vehicle_class        <chr> "PPV", "PPV", "PPV", "PPV", "PPV", "PPV", …
+#> $ minor_vehicle_class        <chr> "PPV-IR excluding Farmers", "PPV-IR exclud…
+#> $ excluded_driver_code       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+#> $ trailer_indicator          <chr> "N", "N", "N", "N", "Y", "N", "N", "Y", "N…
+#> $ grid_indicator             <chr> NA, NA, "Y", "N", NA, NA, "N", NA, "N", NA…
+#> $ first_chance_indicator     <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+#> $ region                     <chr> "1 - Alberta", "1 - Alberta", "1 - Alberta…
+#> $ province                   <chr> "AB", "AB", "AB", "AB", "AB", "AB", "AB", …
+#> $ deductible_amount          <chr> "All Perils ($250 Deductible) / Tous Risqu…
+#> $ limit_amount               <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+#> $ entry_half_year            <chr> "200301", "201301", "200602", "201302", "2…
+#> $ accident_half_year         <chr> "200202", "201301", "200602", "201302", "2…
+#> $ factor_flag                <chr> "No", "No", "No", "No", "No", "No", "No", …
+#> $ fleet_flag                 <chr> "Fleet rated", "Fleet rated", "No", "No", …
+#> $ major_coverage_type        <chr> "All Perils", "All Perils", "All Perils", …
+#> $ minor_coverage_type        <chr> "All Perils", "All Perils", "All Perils", …
+#> $ loss_transfer_flag         <chr> "No", "No", "No", "No", "No", "No", "No", …
+#> $ paid_outstanding_indicator <chr> "Paid", "Paid", "Outstanding", "Paid", "Pa…
+#> $ kind_of_loss_code          <chr> "Fire claim", "Glass/windshield damage not…
+```
+Now we have the list `data_auto` that contains all the data that needs to be aggregated and sorted.  
+The first step is to create the directory `output` where all the processed files will be stored: 
+```{r dir_create} 
+dir_create("output")
+```
+In order to do this we define the function `generate_template_data()`:
+```{r function_def}
+generate_template_data <- function(triangle_df,
+                                   premiums_exposures_df,
+                                   output_path) {
+  count_triangle <- triangle_df %>%
+    gisa_extract_triangle(type = "count")
+
+  paid_triangle <- triangle_df %>%
+    gisa_extract_triangle(type = "paid")
+
+  incurred_triangle <- triangle_df %>%
+    gisa_extract_triangle(type = "incurred")
+
+  premiums_exposures <- premiums_exposures_df %>%
+    group_by(accident_half_year) %>%
+    summarize(premium_earned = sum(earned_premium),
+              car_years_earned = sum(earned_vehicles),
+              .groups = "drop")
+
+  list(
+    premiums_exposures = premiums_exposures,
+    reported_counts = count_triangle,
+    paid_amounts = paid_triangle,
+    incurred_amounts = incurred_triangle
+  ) %>%
+    openxlsx::write.xlsx(output_path)
+
+  invisible(output_path)
+}
+```
+This function takes the input file and create the `count`, `paid`, `incurred` triangles, alongside the `premium` and `exposure` (measured in car_years) vectors. These outputs are saved in a `xlsx` file with 4 sheets:  
+  1. premiums_exposures  
+  2. reported_counts  
+  3. paid_amounts  
+  4. incurred_amounts  
+  
+We define now the names of the provinces/regions we will use to aggregate the data.
+```{r names}
+province_list <- names(data_auto) %>% str_extract("[:upper:]+$") %>% unique()
+
+AB_names <- names(data_auto) %>% magrittr::extract(.,str_detect(.,"AB$"))
+NB_names <- names(data_auto) %>% magrittr::extract(.,str_detect(.,"NB$"))
+NL_names <- names(data_auto) %>% magrittr::extract(.,str_detect(.,"NL$"))
+NS_names <- names(data_auto) %>% magrittr::extract(.,str_detect(.,"NS$"))
+PE_names <- names(data_auto) %>% magrittr::extract(.,str_detect(.,"PE$"))
+ON_names <- names(data_auto) %>% magrittr::extract(.,str_detect(.,"ON$"))
+```
+
+We can now extract the required data and aggregate them in triangles. We show here an example for `Ontario Third Party Liability`, however in the script file `generate_triangle_data.R` you will find the functions to create all the 10 triangles agreed upon.  
+Here the function:  
+```{r function_create}
+generate_template_data(
+  data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - ON"]] %>%
+    filter(grepl("^Bodily Injury", kind_of_loss_code)),
+  data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - ON"]] %>%
+    filter(major_coverage_type == "Third Party Liability"),
+  "output/Ontario_TPL_BI.xlsx"
+)
+``` 
+The function takes three arguments: `triangle_df`, `premiums_exposures_df`, `output_path`.  
+In this case we have:  
+```{r not_run1}
+triangle_df = data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - ON"]] %>% 
+              filter(grepl("^Bodily Injury", kind_of_loss_code))
+
+```
+We are selecting the `"Loss development exhibit - Private Passenger - Third Party Liability - ON"` data.frame in the `data_auto` list and filtering the peril (`kind_of_loss_code` column) according to the one we need, `Bodily Injury` in this case.  
+Then we defined:  
+```{r not_run2}
+premiums_exposures_df = data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - ON"]] %>%
+                        filter(major_coverage_type == "Third Party Liability")
+```
+Similarly, we are selecting the `"Loss development exhibit - Private Passenger - Exposures and Premium distribution - ON"` data.frame in the `data_auto` list and filtering the peril (`major_coverage_type` column) according to the one we need, `Third Party Liability` in this case.  
+Finally, we can select the directory and the file name where to save the `xlsx` file:
+```{r not_run3}
+output_path = "output/Ontario_TPL_BI.xlsx"
+```
+The file just created will contain all the triangles and the relative premiums and exposure.  
+The script `generate_triangle_data.R` also contains the instructions to create the triangles for each of the other regions/lobs.  
+At the end, the `output` folder will look like this:
+```{r output_list}
+dir_ls("output")
+#> output/Alberta_Collision.xlsx          output/Nova_Scotia_TPL_BI.xlsx
+#> output/Alberta_TPL_BI.xlsx             output/Ontario_AB_DI.xlsx
+#> output/Atlantic_Canada_Collision.xlsx  output/Ontario_AB_MR.xlsx
+#> output/Atlantic_Canada_TPL_BI.xlsx     output/Ontario_Collision.xlsx
+#> output/Nova_Scotia_Collision.xlsx      output/Ontario_TPL_BI.xlsx
+```
+
