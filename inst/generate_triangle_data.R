@@ -182,7 +182,7 @@ all.equal(names(data_auto[["Loss development exhibit - Private Passenger - Third
           names(data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - NB"]]))
 
 data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - AC"]] <-
-  union(data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - NS"]],
+  bind_rows(data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - NS"]],
         data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - NL"]],
         data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - PE"]],
         data_auto[["Loss development exhibit - Private Passenger - Third Party Liability - NB"]])
@@ -193,7 +193,7 @@ all.equal(names(data_auto[["Loss development exhibit - Private Passenger - Expos
           names(data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - NB"]]))
 
 data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - AC"]] <-
-  union(data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - NS"]],
+  bind_rows(data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - NS"]],
         data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - NL"]],
         data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - PE"]],
         data_auto[["Loss development exhibit - Private Passenger - Exposures and Premium distribution - NB"]])
@@ -214,7 +214,7 @@ all.equal(names(data_auto[["Loss development exhibit - Private Passenger - Colli
           names(data_auto[["Loss development exhibit - Private Passenger - Collision - NB"]]))
 
 data_auto[["Loss development exhibit - Private Passenger - Collision - AC"]] <-
-  union(data_auto[["Loss development exhibit - Private Passenger - Collision - NS"]],
+  bind_rows(data_auto[["Loss development exhibit - Private Passenger - Collision - NS"]],
         data_auto[["Loss development exhibit - Private Passenger - Collision - NL"]],
         data_auto[["Loss development exhibit - Private Passenger - Collision - PE"]],
         data_auto[["Loss development exhibit - Private Passenger - Collision - NB"]])
