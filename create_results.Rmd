@@ -1,0 +1,116 @@
+---
+title: "Triangle standard methods"
+author: "Giulio Carnevale, Marco De Virgilis"
+date: "3/17/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+# Create results
+
+This document shows how to generate Chain Ladder and Standard Cape Cod results from the GISA data.    
+It is assumed that the data itself has already been downloaded and processed with the script `generate_triangle_data.R`.  
+The folder will contain the following files:    
+  * `Alberta_Collision.xlsx`  
+  * `Alberta_TPL_BI.xlsx`  
+  * `Atlantic_Canada_Collision.xlsx`  
+  * `Atlantic_Canada_TPL_BI.xlsx`  
+  * `Nova_Scotia_Collision.xlsx`  
+  * `Nova_Scotia_TPL_BI.xlsx`  
+  * `Ontario_AB_DI.xlsx`  
+  * `Ontario_AB_MR.xlsx`  
+  * `Ontario_Collision.xlsx`  
+  * `Ontario_TPL_BI.xlsx`  
+
+
+The main script needed for the process is `generate_CL_CC_results.R` located in the `inst` folder. The next session will describe each step in the script file.
+
+# generate_CL_CC_results.R
+
+## Loading the required libraries
+
+The libraries required for the analysis are:
+
+```{r libraries}
+library(gisadata) # can be installed with `remotes::install_github("kasaai/gisadata")`
+library(readxl)
+library(ChainLadder)
+library(openxlsx)
+library(tidyverse)
+
+```
+
+Let's suppose we have all the files processed in the `gisa_data` directory
+```{r list}
+dir_ls("gisa-data")
+#> gisa-data/Alberta_Collision.xlsx  
+#> gisa-data/Alberta_TPL_BI.xlsx  
+#> gisa-data/Atlantic_Canada_Collision.xlsx
+#> gisa-data/Atlantic_Canada_TPL_BI.xlsx 
+#> gisa-data/Nova_Scotia_Collision.xlsx 
+#> gisa-data/Nova_Scotia_TPL_BI.xlsx 
+#> gisa-data/Ontario_AB_DI.xlsx
+#> gisa-data/Ontario_AB_MR.xlsx
+#> gisa-data/Ontario_Collision.xlsx  
+#> gisa-data/Ontario_TPL_BI.xlsx          
+```
+Now it's possible to generate Chain Ladder and Cape Cod results by calling the functions `print_cl_results` and `print_cape_cod_results` on the name of the file (or the full path).  
+Chain Ladder example:  
+```{Chain Ladder results example}
+print_cl_results("Alberta_Collision.xlsx")
+print_cl_results("Alberta_TPL_BI.xlsx")
+print_cl_results("Atlantic_Canada_Collision.xlsx")
+print_cl_results("Atlantic_Canada_TPL_BI.xlsx")
+print_cl_results("Nova_Scotia_Collision.xlsx")
+print_cl_results("Nova_Scotia_TPL_BI.xlsx")
+print_cl_results("Ontario_AB_DI.xlsx")
+print_cl_results("Ontario_AB_MR.xlsx")
+print_cl_results("Ontario_Collision.xlsx")
+print_cl_results("Ontario_TPL_BI.xlsx")
+```
+
+Cape Cod example:  
+```{Cape Cod results example}
+print_cape_cod_results("Alberta_Collision.xlsx")
+print_cape_cod_results("Alberta_TPL_BI.xlsx")
+print_cape_cod_results("Atlantic_Canada_Collision.xlsx")
+print_cape_cod_results("Atlantic_Canada_TPL_BI.xlsx")
+print_cape_cod_results("Nova_Scotia_Collision.xlsx")
+print_cape_cod_results("Nova_Scotia_TPL_BI.xlsx")
+print_cape_cod_results("Ontario_AB_DI.xlsx")
+print_cape_cod_results("Ontario_AB_MR.xlsx")
+print_cape_cod_results("Ontario_Collision.xlsx")
+print_cape_cod_results("Ontario_TPL_BI.xlsx")      
+```
+
+These two functions produce the results appending in the name of the file the name of the method.  
+The final folder will contain the following files:  
+
+```{final folder}
+dir_ls("gisa-data")
+#> Alberta_Collision_Chain_Ladder.xlsx
+#> Alberta_TPL_BI_Chain_Ladder.xlsx
+#> Atlantic_Canada_Collision_Chain_Ladder.xlsx
+#> Atlantic_Canada_TPL_BI_Chain_Ladder.xlsx
+#> Nova_Scotia_Collision_Chain_Ladder.xlsx
+#> Nova_Scotia_TPL_BI_Chain_Ladder.xlsx
+#> Ontario_AB_DI_Chain_Ladder.xlsx
+#> Ontario_AB_MR_Chain_Ladder.xlsx
+#> Ontario_Collision_Chain_Ladder.xlsx
+#> Ontario_TPL_BI_Chain_Ladder.xlsx
+#> Alberta_Collision_Cape_Cod.xlsx
+#> Alberta_TPL_BI_Cape_Cod.xlsx
+#> Atlantic_Canada_Collision_Cape_Cod.xlsx
+#> Atlantic_Canada_TPL_BI_Cape_Cod.xlsx
+#> Nova_Scotia_Collision_Cape_Cod.xlsx
+#> Nova_Scotia_TPL_BI_Cape_Cod.xlsx
+#> Ontario_AB_DI_Cape_Cod.xlsx
+#> Ontario_AB_MR_Cape_Cod.xlsx
+#> Ontario_Collision_Cape_Cod.xlsx
+#> Ontario_TPL_BI_Cape_Cod.xlsx
+```
+
+Each file contains the results for the specified method for both Incurred and Paid data.
